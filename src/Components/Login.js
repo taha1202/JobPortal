@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -47,6 +48,7 @@ const Login = () => {
                 <input type="name" placeholder="Last Name" />    
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Password" />
+                <Link to='/login'> Already Have An Account </Link>
                 <button> Sign Up </button>
                 </div>
             </>

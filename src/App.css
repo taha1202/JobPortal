@@ -1,13 +1,24 @@
 body {
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
-  background-color: white;
+  margin: 0; */
+  background-color: rgb(12, 158, 216);
 }
 
+.navbar {
+
+  background-color: rgb(58, 12, 145);
+  
+
+}
+
+.navbar-brand {
+color: rgb(8, 85, 34);
+  
+}
 .container {
   display: flex;
   justify-content: center;
