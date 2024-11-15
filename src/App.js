@@ -1,4 +1,5 @@
 import './App.css';
+import Home from './Components/Home';
 import Login from './Components/Login';
 import Navbar from './Components/Navbar';
 
@@ -14,7 +15,7 @@ function App() {
       <Router>
         <Navbar/>
         <Routes>
-      <Route path="/"/>   
+      <Route path="/" element=  {<Home/>}/>   
       <Route path="/about" />
       <Route path="/login" element=  {<Login/>}/>     
       </Routes>

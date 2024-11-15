@@ -5,89 +5,139 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0; */
-  background-color: rgb(12, 158, 216);
+  background-color: rgba(2, 65, 65, 0.938);
 }
 
-.navbar {
+/* .navbar {
 
   background-color: rgb(58, 12, 145);
   
 
+} */
+
+
+/* .carousel-container {
+  width: 100%;
+  max-width: 800px; 
+  height: 90vh; 
+  overflow: hidden;
 }
 
-.navbar-brand {
-color: rgb(8, 85, 34);
+
+.carousel-item img {
   
-}
+  width: 100%;
+  height: 90vh;
+  object-fit: "cover";
+  transition: transform 0.3s ease; 
+} */
+
+/* login & Signup CSS */
+
 .container {
+  max-width: 500px;
+  padding: 20px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100%;
 }
 
+
+
 .form-container {
-  background-color: rgba(12, 99, 230, 0.781);
+  background-color: rgba(19, 2, 65, 0.938);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 300px;
 }
 
-.form-toggle {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.form-toggle button {
-  width: 50%;
-  padding: 10px;
-  background-color: #f3f3f3;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 10px 10px 0 0;
-}
-
-.form-toggle .active {
-  background-color: #130781;
+.form p {
   color: white;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: underline;
 }
+
+
+
 
 .form {
   display: flex;
   flex-direction: column;
 }
 
-.form h2 {
-  margin-bottom: 20px;
+
+
+.form input,
+.form select,
+.form button {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  box-sizing: border-box; /* Ensures padding doesn’t push elements outside the container */
 }
 
-.form input {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+
+
+.form label {
+  color: white;
 }
 
 .form button {
-  padding: 10px;
-  background-color:#033452;
+ background-color: rgba(12, 15, 194, 0.836);
+ color: white;
+ border-radius: 5px;
+ border: 1px solid black;
+}
+
+
+/* Navbar CSS */
+
+.navbar-brand .first-word {
+color: blue;
+}
+
+.navbar-brand .second-word {
+  color: rgb(15, 153, 45);
+  }
+  /* Home Page CSS  */
+
+
+.search-bar p{
+  margin: 15px;
+  padding: 5px 10px;
+  margin-left: 135px;
   color: white;
-  border: none;
+  background-color: gray;
+  border: 1px solid black;
   border-radius: 5px;
+  display: inline-flex;
   cursor: pointer;
 }
 
-.form a {
+.search-bar h2{
+ 
   color: white;
-  text-decoration: none;
-  margin-bottom: 10px;
-  text-align: right;
+  text-align: center;
 }
 
-.form p {
-  text-align: center;
+.job-list {
+  margin:20px ;
+  color: white
+}
+
+.job-list .card{
+  margin-top: 10px;
+  background-color: rgba(19, 2, 65, 0.938);
+  color: white;
+  width: 18rem;
+}
+
+.prev-next{
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
 }
