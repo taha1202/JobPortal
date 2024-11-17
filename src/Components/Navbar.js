@@ -1,6 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-const Navbar = () => {
+import React,{useEffect,useState }  from "react";
+import { Link, useNavigate } from "react-router-dom";
+const Navbar = ({ role, setRole,U_name,setName }) => {
+  const navigate = useNavigate();
+  const [dropdown,setDropdown] = useState(false);
+
+  useEffect(() => {
+    // Check if the role exists in localStorage
+    const storedUser = localStorage.getItem("user");
+    
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      console.log(user);
+      setRole(user.role_id); // Set the role from localStorage if available
+      setName(user.Uname);
+      
+    }
+  }, [setRole,setName]);
+
+  const HandleLogOut = () => {
+    localStorage.clear(); // Clear user data
+    setRole(""); // Reset role
+    setDropdown(false);
+    navigate("/");
+    
+    alert("LogOut Successfullly")
+  };
+
+  const HandleDropdown = () =>{
+    setDropdown(!dropdown);
+  }
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -16,12 +44,72 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
+              {role === 2 && ( // Employer-specific options
+              <>
               <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                  About
+                <Link className="nav-link" to="/postjob">
+                  Post a Job
                 </Link>
               </li>
-            </ul>
+
+              <li className="nav-item">
+              <Link className="nav-link" to="/viewpostjob">
+                View Post Jobs
+              </Link>
+              </li>
+              <li className="nav-item">
+              <Link className="nav-link" to="/application">
+                Applications
+              </Link>
+              </li>
+            </>
+            )}
+            {role === 1 && ( // Job seeker-specific options
+            <>
+              <li className="nav-item">
+                <Link className="nav-link" to="/view-jobs">
+                  View Jobs
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/view-jobs">
+                  Applied Jobs
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/view-jobs">
+                  Saved Jobs
+                </Link>
+              </li>
+              </>
+            )}
+          </ul>
+          {role ? (
+            <>
+            <div className="user-info">
+            <button type="button" class="btn btn-light" onClick={HandleDropdown}>
+            <i className="fa fa-user mx-2" onClick={HandleDropdown} ></i>
+            {U_name}
+            </button>
+            
+            <p ></p>
+            {dropdown && (
+            <div className="dropdown-menu show" style={{ position: "absolute", top: "40px", right: "0", zIndex: 100 }}>
+                    
+                    <Link onClick={() =>{setDropdown(!dropdown)}} className="dropdown-item" to="/profile" >
+                    <i class="fa-solid fa-street-view mx-2" onClick={{HandleDropdown}}></i>
+                      View Profile
+                    </Link>
+                    <button className="dropdown-item" onClick={HandleLogOut}>
+                    <i class="fa-solid fa-right-from-bracket mx-2"></i>
+                      Logout
+                    </button>
+            </div>
+            )}
+            </div>
+            </>
+          ) : (
+            <>
             <Link
               className="btn btn-outline-primary mx-2"
               to="/login?mode=login"
@@ -36,7 +124,10 @@ const Navbar = () => {
             >
               SignUp
             </Link>
+            </>
+             )}
           </div>
+
         </div>
       </nav>
     </>

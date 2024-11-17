@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setRole, setName }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [values, setValues] = useState({
     f_name: "",
@@ -13,10 +14,21 @@ const Login = () => {
     role: "",
   });
 
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     setIsLogin(params.get("mode") === "login");
-  }, [location.search]);
+
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setRole(user.role_id); // Set role from localStorage if available
+      setName(user.Uname);
+    }
+  }, [location.search, setRole, setName]);
 
   const HandleLogin = () => {
     setIsLogin(true);
@@ -26,109 +38,236 @@ const Login = () => {
     setIsLogin(false);
   };
 
-  const HandleSubmit = (e) => {
+  const HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(values);
+      if (isLogin) {
+        if (!credentials.email || !credentials.password) {
+          alert("All fields are required!");
+          return;
+        } else {
+          // Handle Login
+          const response = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            localStorage.setItem(
+              "user",
+              JSON.stringify({ Uname: data.Uname, role_id: data.role_id })
+            );
+            setRole(data.role_id);
+            setName(data.Uname);
+            navigate("/"); // Redirect to homepage
+            alert("Login successful!");
+          } else {
+            alert(data.message || "Login failed!");
+          }
+        }
+      } else {
+        // Handle Signup
+        if (
+          !values.email ||
+          !values.password ||
+          !values.f_name ||
+          !values.l_name ||
+          !values.phn_no ||
+          !values.role
+        ) {
+          alert("All fields are required!");
+          return;
+        } else {
+          const response = await fetch("http://localhost:5000/api/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              first_name: values.f_name,
+              last_name: values.l_name,
+              email: values.email,
+              phone_number: values.phn_no,
+              password: values.password,
+              role_id: values.role === "Employer" ? 2 : 1, // Map role to role_id
+            }),
+          });
+          console.log(values);
+          const data = await response.json();
+          if (response.ok) {
+            localStorage.setItem(
+              "user",
+              JSON.stringify({ Uname: data.Uname, role_id: data.role_id })
+            );
+            setRole(data.role_id);
+            setName(data.Uname);
+            navigate("/"); // Redirect to homepage
+            alert("Signup successful!");
+          } else {
+            alert(data.message || "Signup failed!");
+          }
+        }
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
   const HandleChange = (e) => {
-    const value = e.target.value;
-    setValues({
-      ...values,
-      [e.target.name]: value,
-    });
+    const { name, value } = e.target; // Destructure name and value
+    if (isLogin) {
+      // For login, update the credentials
+      setCredentials({
+        ...credentials,
+        [name]: value,
+      });
+    } else {
+      // For signup, update the values
+      setValues({
+        ...values,
+        [name]: value,
+      });
+    }
   };
 
   return (
     <div className="container">
       <div className="form-container">
-        
         <div>
           {isLogin ? (
             <>
               <div className="form">
-                <label htmlFor="email" className="form-label">Email </label>
+                <label htmlFor="email" className="form-label">
+                  Email{" "}
+                </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
-                  value={values.email}
+                  value={credentials.email}
                   onChange={HandleChange}
+                  required
                 />
-                <label htmlFor="password" className="form-label"> Password </label>
+                <label htmlFor="password" className="form-label">
+                  {" "}
+                  Password{" "}
+                </label>
                 <input
                   type="password"
                   id="password"
                   name="password"
-                  value={values.password}
+                  value={credentials.password}
                   onChange={HandleChange}
+                  required
                 />
-                 <p> Forgot Password</p> 
+                <p> Forgot Password</p>
 
-                <button className="my-2"> Log In </button>
-                <p className="my-2" onClick={HandleSignUp}>Register Now!</p>
+                <div class="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
+                  <button class="btn btn-primary" type="button">
+                    Login
+                  </button>
+                </div>
+                <p className="my-2" onClick={HandleSignUp}>
+                  Register Now!
+                </p>
               </div>
             </>
           ) : (
             <>
               <div className="form">
-                <label htmlFor="f_name" className="form-label"> First Name </label>
+                <label htmlFor="f_name" className="form-label">
+                  {" "}
+                  First Name{" "}
+                </label>
                 <input
                   id="f_name"
                   type="name"
                   name="f_name"
                   value={values.f_name}
                   onChange={HandleChange}
+                  required
                 />
-                <label htmlFor="l_name" className="form-label"> Last Name </label>
+                <label htmlFor="l_name" className="form-label">
+                  {" "}
+                  Last Name{" "}
+                </label>
                 <input
                   id="l_name"
                   type="name"
                   name="l_name"
                   value={values.l_name}
                   onChange={HandleChange}
+                  required
                 />
-                <label htmlFor="email" className="form-label">Email </label>
+                <label htmlFor="email" className="form-label">
+                  Email{" "}
+                </label>
                 <input
                   id="email"
                   type="email"
                   name="email"
                   value={values.email}
                   onChange={HandleChange}
+                  required
                 />
-                <label htmlFor="phn_no" className="form-label"> Phone No </label>
+                <label htmlFor="phn_no" className="form-label">
+                  {" "}
+                  Phone No{" "}
+                </label>
                 <input
                   id="phn_no"
                   type="tel"
                   name="phn_no"
                   value={values.phn_no}
                   onChange={HandleChange}
+                  required
                 />
-                <label htmlFor="password" className="form-label"> Password </label>
+                <label htmlFor="password" className="form-label">
+                  {" "}
+                  Password{" "}
+                </label>
                 <input
                   id="password"
                   type="password"
                   name="password"
                   value={values.password}
                   onChange={HandleChange}
+                  required
                 />
-                <label htmlFor="role" className="form-label"> Role </label>
-                {/* <button id="role" class="btn btn-secondary dropdown-toggle" type="button" 
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Select Role
-                </button> */}
-                <select name="role" value={values.role} onChange={HandleChange}>
-                <option value="">Select Role</option>
-                <option value="Job Seeker">Job Seeker</option>
-                <option value="Employer">Employer</option>
+                <label htmlFor="rol" className="form-label">
+                  {" "}
+                  Role{" "}
+                </label>
+                <select
+                  name="role"
+                  id="rol"
+                  value={values.role}
+                  onChange={HandleChange}
+                  required
+                >
+                  <option disabled value="">
+                    Select Role
+                  </option>
+                  <option value="Job Seeker">Job Seeker</option>
+                  <option value="Employer">Employer</option>
                 </select>
 
-                <p onClick={HandleLogin} className="my-2"> Already Have An Account! </p>
-                <button onClick={HandleSubmit} className="my-2" > Sign Up </button>
+                <p onClick={HandleLogin} className="my-2">
+                  {" "}
+                  Already Have An Account? Sign in{" "}
+                </p>
+                <div class="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
+                  <button class="btn btn-primary" type="button">
+                    Sign Up
+                  </button>
+                </div>
               </div>
             </>
           )}
