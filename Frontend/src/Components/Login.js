@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Login = ({ setRole, setName }) => {
+
+const Login = ({ setRole, setName}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  
   const [values, setValues] = useState({
     f_name: "",
     l_name: "",
@@ -19,15 +21,23 @@ const Login = ({ setRole, setName }) => {
     password: "",
   });
   useEffect(() => {
+    
+    
     const params = new URLSearchParams(location.search);
     setIsLogin(params.get("mode") === "login");
 
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
-      setRole(user.role_id); // Set role from localStorage if available
+      setRole(user.role_id); 
       setName(user.Uname);
     }
+
+    // const timer = setTimeout(() => {
+    //   setShowStarterPage(false);
+    // }, 11000); // 5000ms = 5 seconds
+
+    // return () => clearTimeout(timer);
   }, [location.search, setRole, setName]);
 
   const HandleLogin = () => {
@@ -39,13 +49,12 @@ const Login = ({ setRole, setName }) => {
   };
 
   const HandleSubmit = async (e) => {
-
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
       if (isLogin) {
         if (!credentials.email || !credentials.password) {
-          alert("All fields are required!");
+           alert("All fields are required!");
           return;
         } else {
           // Handle Login
@@ -77,7 +86,6 @@ const Login = ({ setRole, setName }) => {
           }
         }
       } else {
-        // Handle Signup
         if (
           !values.email ||
           !values.password ||
@@ -144,9 +152,15 @@ const Login = ({ setRole, setName }) => {
   };
 
   return (
+    <>
+    <h1 className="text-center my-3" style={{color:"white"}} >
+    Make the most of your professional life    
+    </h1>
     <div className="container">
+      
       <div className="form-container">
         <div>
+          
           {isLogin ? (
             <>
               <div className="form">
@@ -154,7 +168,7 @@ const Login = ({ setRole, setName }) => {
                   Email{" "}
                 </label>
                 <div className="input-with-icon">
-                  <i class="fa-solid fa-envelope"></i>
+                  <i className="fa-solid fa-envelope" style={{marginTop:"15px"}}></i>
 
                   <input
                     type="email"
@@ -170,7 +184,7 @@ const Login = ({ setRole, setName }) => {
                   Password{" "}
                 </label>
                 <div className="input-with-icon">
-                  <i class="fa-solid fa-lock"></i>
+                  <i className="fa-solid fa-lock" style={{marginTop:"12px"}}></i>
                   <input
                     type="password"
                     id="password"
@@ -182,8 +196,8 @@ const Login = ({ setRole, setName }) => {
                 </div>
                 <p> Forgot Password</p>
 
-                <div class="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
-                  <button class="btn btn-primary" type="button">
+                <div className="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
+                  <button className="btn btn-primary" type="button">
                     Login
                   </button>
                 </div>
@@ -276,8 +290,8 @@ const Login = ({ setRole, setName }) => {
                   {" "}
                   Already Have An Account? Sign in{" "}
                 </p>
-                <div class="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
-                  <button class="btn btn-primary" type="button">
+                <div className="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
+                  <button className="btn btn-primary" type="button">
                     Sign Up
                   </button>
                 </div>
@@ -287,6 +301,7 @@ const Login = ({ setRole, setName }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

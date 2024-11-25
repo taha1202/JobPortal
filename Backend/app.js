@@ -6,7 +6,8 @@ const cors = require('cors');
 // const session = require('express-session');
 const jobRoutes = require('./routes/jobRoutes'); 
 const verifyToken = require('./middleware/verifyToken');
-
+const profileRoutes = require('./routes/profileRouter'); 
+const application = require('./routes/applicationRoutes');
 const app = express();
 
 
@@ -17,38 +18,26 @@ app.use(express.json());
 app.use(cors());
 
 
-
-// const sessionSecret = process.env.SESSION_SECRET || 'fallback-secret-for-dev';
-// app.use(
-//   session({
-//     secret: sessionSecret, // Replace with a strong secret
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       secure: false, // Allows cookies over HTTP
-//       httpOnly: true, // Prevents access to cookies via JavaScript
-//       sameSite: 'lax', // Restricts third-party cookie sharing
-//       maxAge: 1000 * 60 * 60 * 24, // 1 day in milliseconds
-//     }
-//   })
-// );
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Serve the HTML file
-app.use(express.static(path.join('C:', 'Users', 'Taha', 'Desktop', 'job portal', 'Frontend', 'public')));
-
-// Route to serve index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join('C:', 'Users', 'Taha', 'Desktop', 'job portal', 'public', 'Frontend', 'index.html'));
-});
 
 app.use("/uploads", express.static("uploads"));
-// Use routes
+
 app.use('/api',userRoutes);
 app.use('/api', verifyToken);
 app.use('/api', jobRoutes);
+app.use('/api',profileRoutes)
+app.use('/api', application)
+
+
+const frontendPath = path.join(__dirname, '..', 'Frontend', 'public');
+app.use(express.static(frontendPath));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+
 
 // app.use('/uploads', express.static('uploads'));  // Serve static files
 

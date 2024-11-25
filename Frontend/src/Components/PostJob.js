@@ -3,57 +3,55 @@ import { useNavigate } from "react-router-dom";
 const PostJob = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
-    company_name: "Tech Innovations Ltd.",
-    job_title: "Software Engineer",
-    job_category: "Software Development",
-    company_description:
-      "Tech Innovations is a leading software development company specializing in cutting-edge technologies.",
-    job_description:
-      "We are looking for a Software Engineer to join our team. You will be responsible for developing and maintaining software applications.",
-    requirement:
-      "1. Bachelor's degree in Computer Science or related field.\n2. Proficiency in JavaScript and Node.js.\n3. Strong problem-solving skills.",
-    salary: 70000,
-    status: "active", // This can be "active" or "inactive"
-    city: "San Francisco",
-    country: "United States",
-    state: "California",
-    street: "123 Innovation Drive",
-    picture:""
+    company_name: "",
+    job_title: "",
+    job_category: "",
+    company_description: "",
+    job_description: "",
+    requirement: "",
+    salary: 0,
+    status: "",
+    city: "",
+    country: "",
+    state: "",
+    street: "",
+    picture: "",
   });
-
+  
   const HandleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
       let pictureUrl = "";
-      console.log("pic = ",values.picture);
-    if (values.picture) {
-      const formData = new FormData();
-      formData.append("picture", values.picture);
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-      const uploadResponse = await fetch("http://localhost:5000/api/upload-image", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      // console.log("pic = ", values.picture);
+      if (values.picture) {
+        const formData = new FormData();
+        formData.append("picture", values.picture);
+        formData.forEach((value, key) => {
+          console.log(`${key}:`, value);
+        });
+        const uploadResponse = await fetch(
+          "http://localhost:5000/api/upload-image",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
 
-      const uploadData = await uploadResponse.json();
+        const uploadData = await uploadResponse.json();
 
-      if (!uploadResponse.ok) {
+        if (!uploadResponse.ok) {
+          console.log(pictureUrl);
+          console.error(uploadData.message || "Failed to upload picture.");
+        }
+
+        console.log(uploadData.url);
+        pictureUrl = uploadData.url; 
         console.log(pictureUrl);
-        console.error(uploadData.message || "Failed to upload picture.");
       }
-
-      console.log(uploadData.url);
-      pictureUrl = uploadData.url; // Assuming the backend returns the picture URL
-      console.log(pictureUrl);
-    }
-
-
 
       const response = await fetch("http://localhost:5000/api/post-job", {
         method: "POST",
@@ -62,22 +60,8 @@ const PostJob = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          // company_name: values.company_name,
-          // job_title: values.job_title,
-          // job_category: values.job_category,
-          // company_description: values.company_description,
-          // job_description: values.job_description,
-
-          // requirement: values.requirement,
-          // salary: values.salary,
-          // status: values.status,
-          // city: values.city,
-          // country: values.country,
-          // state: values.state,
-          // street: values.street,
-          // picture: values.picture,
           ...values,
-        picture: pictureUrl, 
+          picture: pictureUrl,
         }),
       });
       console.log(values);
@@ -97,8 +81,8 @@ const PostJob = () => {
   };
 
   const HandleOnChange = (e) => {
-    const { name, value, type,files} = e.target;
-    
+    const { name, value, type, files } = e.target;
+
     if (type === "file") {
       console.log(files[0]);
       setValues({
@@ -111,12 +95,7 @@ const PostJob = () => {
         [name]: value,
       });
     }
-    // const {name,value} = e.target
     
-    // setValues({
-    //   ...values,
-    //   [name]: value,
-    // });
   };
 
   return (
@@ -259,8 +238,7 @@ const PostJob = () => {
               </select>
             </div>
           </div>
-
-          {/* Row 6: Location */}
+          
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="validationDefault05">City</label>

@@ -1,10 +1,11 @@
-// routes/applicationRoutes.js
+
 const express = require('express');
-const { applyForJob } = require('../controllers/applicationController');
-const ensureAuthenticated = require('../middleware/authMiddleware');
+const { applyForJob, AppliedJobs, DeleteAppliedJob, viewApplications, updateStatus } = require('../controllers/applicationController');
 const router = express.Router();
 
-// POST: Apply for a job (only for job seekers)
-router.post('/apply', ensureAuthenticated, applyForJob);
-
+router.post('/apply/:id',applyForJob);
+router.get('/applied-jobs',AppliedJobs );
+router.delete('/delete-appliedjob/:id', DeleteAppliedJob);
+router.get('/view-applications',viewApplications);
+router.put('/update-status',updateStatus);
 module.exports = router;
