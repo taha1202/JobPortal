@@ -149,8 +149,8 @@ const Login = ({ setRole, setName}) => {
 
   return (
     <>
-    <h1 className="text-center my-3" style={{color:"white"}} >
-    Make the most of your professional life    
+    <h1 className="text-center my-3" style={{color:"white", fontWeight: "bold"}} >
+      Make the most of your professional life    
     </h1>
     <div className="container">
       
