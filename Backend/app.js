@@ -8,6 +8,10 @@ const jobRoutes = require('./routes/jobRoutes');
 const verifyToken = require('./middleware/verifyToken');
 const profileRoutes = require('./routes/profileRouter'); 
 const application = require('./routes/applicationRoutes');
+const { GiveFeedBack, Getfeedback } = require('./controllers/FeedBackController');
+
+const messageroute = require('./routes/MessageRoutes');
+const { GetCategory } = require('./controllers/jobSearchController');
 const app = express();
 
 
@@ -24,13 +28,16 @@ app.use(bodyParser.json());
 
 app.use("/uploads", express.static("uploads"));
 
+app.get('/api/getfeedback',Getfeedback);
+app.get('/api/getcategory',GetCategory);
 app.use('/api',userRoutes);
 app.use('/api', verifyToken);
 app.use('/api', jobRoutes);
-app.use('/api',profileRoutes)
-app.use('/api', application)
+app.use('/api',profileRoutes);
+app.use('/api', application);
+app.post('/api/givefeedback',GiveFeedBack);
 
-
+app.use('/api', messageroute);
 const frontendPath = path.join(__dirname, '..', 'Frontend', 'public');
 app.use(express.static(frontendPath));
 app.get('*', (req, res) => {

@@ -51,8 +51,9 @@ const ViewApplications = () => {
           });
     
           const data = await response.json();
-          if (response.ok) {
-            alert(data.message || "Failed to Accept the application!");
+          console.log(data);
+          if (!response.ok) {
+            throw new Error("Failed to Accept Application.");
           } 
           setValues(values.filter((value) => value.application_id !== application_id));
           alert("Application Accepted");
@@ -79,6 +80,7 @@ const ViewApplications = () => {
           });
     
           const data = await response.json();
+          console.log(data);
           if (!response.ok) {
             alert(data.message || "Failed to Reject the application!");
           } 
@@ -127,7 +129,9 @@ const ViewApplications = () => {
                   </Link>
                 </td>
                 <td>
-                  <button
+                  {value.status === "pending" ? (
+                    <>
+                    <button
                     className="btn btn-success mx-1"
                     onClick={() =>HandleAccept(value.application_id)}
                   >
@@ -139,6 +143,20 @@ const ViewApplications = () => {
                   >
                     <i className="fa-solid fa-x"></i>
                   </button>
+                  </>
+                  ) : (
+                    <>
+                    <Link
+                     
+                      className="btn btn-success"
+                      to={`/sendMessage/${value.user_id}`}
+                    >
+                      <i className="fa-solid fa-message mx-2"></i>
+                      Send Message
+                    </Link>
+                  </>
+                  )}
+                  
                 </td>
               </tr>
             ))

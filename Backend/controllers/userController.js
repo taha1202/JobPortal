@@ -4,7 +4,6 @@ const db = require('../db');
 
 const signup = (req, res) => {
   const { first_name, email, password,phone_number, role_id,last_name } = req.body;
-  // console.log('Signup request body:', req.body); 
 
   
   db.query('SELECT email FROM users WHERE email = ?', [email], (err, results) => {
@@ -38,7 +37,7 @@ const signup = (req, res) => {
               return res.status(500).json({ error: 'Error inserting profile into database' }); 
             }
           });
-          res.status(201).json({ message: 'User Registered Successfully',token, Uname:first_name, role_id: role_id, });
+          res.status(201).json({ message: 'User Registered Successfully',token, Uname:first_name, role_id: role_id,user_id: results.insertId});
         }
       );
     });
@@ -55,22 +54,18 @@ const login = (req, res) => {
     }
     console.log(results);
     const user = results[0];
-    // Compare passwords
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
         const token = jwt.sign(
-          { user_id: user.user_id, role_id: user.role_id, first_name: user.first_name }, // Payload
-          process.env.JWT_SECRET || 'fallback-secret', // Secret key (you can store it in an env variable)
-          { expiresIn: '1d' } // Token expiration time (1 hour)
+          { user_id: user.user_id, role_id: user.role_id, first_name: user.first_name }, 
+          process.env.JWT_SECRET || 'fallback-secret',
+          { expiresIn: '1d' } 
         );
-        // // Store user session
-        // console.log('Session:', req.session);
-        // req.session.user = { user_id: user.user_id, role_id: user.role_id };
-        // console.log('Session:', req.session);
         console.log(token);
-        res.status(200).json({ message: 'Login successful', token, Uname: user.first_name, role_id: user.role_id});
-      } else {
+        res.status(200).json({ message: 'Login successful', token, Uname: user.first_name, role_id: user.role_id,user_id: user.user_id});
+      } 
+      else {
         
         res.status(400).json({ message: 'Invalid Password' });
       }
@@ -102,9 +97,78 @@ const uploadImages = (req, res) => {
 };
 
 
+const GiveFeedBack = async (req, res) => {
+  const { user_id } = req.user;
+  try {
+    
+    console.log(user_id);
+    const { rating, feedback_text, feedback_type,isAnonymous } = req.body;
+    let sql;
+    
+    sql = `INSERT INTO feedback (user_id, rating, comments, created_at,feedback_type,is_anonymous) 
+          VALUES (?,?,?,NOW(),?, ?)`;
+
+    db.query(sql, [user_id,rating,feedback_text,feedback_type,isAnonymous], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Unable to Submit Feedback. Please Try Again Later.",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Feedback Submitted Successfully",
+        jobs: result,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Submitting Feedback",
+      error,
+    });
+  }
+};
+
+const Getfeedback = async (req, res) => {
+  try {
+    const { user_id } = req.user;
+    let sql = `SELECT F.comment, U.first_name,U.last_name FROM feedback F JOIN 
+      Users C ON F.user_id = U.user_id 
+      where F.rating >=  4`;
+
+    db.query(sql, [user_id], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "No Records found",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Posted Job Details",
+        jobs: result,
+      });
+    });
+  }
+   catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Getting posted job details API",
+      error,
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
   uploadResume,
-  uploadImages
+  uploadImages,
+  GiveFeedBack,
+  Getfeedback
 };

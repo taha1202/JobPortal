@@ -33,11 +33,7 @@ const Login = ({ setRole, setName}) => {
       setName(user.Uname);
     }
 
-    // const timer = setTimeout(() => {
-    //   setShowStarterPage(false);
-    // }, 11000); // 5000ms = 5 seconds
-
-    // return () => clearTimeout(timer);
+  
   }, [location.search, setRole, setName]);
 
   const HandleLogin = () => {
@@ -74,7 +70,7 @@ const Login = ({ setRole, setName}) => {
           if (response.ok) {
             localStorage.setItem(
               "user",
-              JSON.stringify({ Uname: data.Uname, role_id: data.role_id })
+              JSON.stringify({ Uname: data.Uname, role_id: data.role_id,Uid:data.user_id })
             );
             localStorage.setItem("token", data.token); 
             setRole(data.role_id);
@@ -116,7 +112,7 @@ const Login = ({ setRole, setName}) => {
           if (response.ok) {
             localStorage.setItem(
               "user",
-              JSON.stringify({ Uname: data.Uname, role_id: data.role_id })
+              JSON.stringify({ Uname: data.Uname, role_id: data.role_id,Uid:data.user_id })
             );
             localStorage.setItem("token", data.token); 
             setRole(data.role_id);

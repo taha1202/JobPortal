@@ -5,19 +5,19 @@ const Navbar = ({ role, setRole, U_name, setName }) => {
   const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
-    // Check if the role exists in localStorage
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
       const user = JSON.parse(storedUser);
       console.log(user);
-      setRole(user.role_id); // Set the role from localStorage if available
+      setRole(user.role_id);
       setName(user.Uname);
     }
   }, [setRole, setName]);
 
   const HandleLogOut = () => {
-    localStorage.clear(); // Clear user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user"); 
     setRole(""); // Reset role
     setDropdown(false);
     navigate("/login?mode=login");
@@ -32,14 +32,13 @@ const Navbar = ({ role, setRole, U_name, setName }) => {
     <>
       <nav
         className="navbar navbar-expand-lg"
-        style={{ backgroundColor: "#0e1822"}}
+        style={{ backgroundColor: "#0e1822" }}
       >
         <div className="container-fluid">
-          
-            <b className="navbar-brand">
-              <span className="first-word">JOB</span>
-              <span className="second-word">PORTAL</span>
-            </b>
+          <b className="navbar-brand">
+            <span className="first-word">JOB</span>
+            <span className="second-word">PORTAL</span>
+          </b>
 
           <button
             className="navbar-toggler"
@@ -107,8 +106,12 @@ const Navbar = ({ role, setRole, U_name, setName }) => {
                   style={{ backgroundColor: "#131d27" }}
                   onClick={HandleDropdown}
                 >
-                  <i className="fa fa-user mx-2" style={{color:"white"}}></i> {U_name}
-                  <i className="fa fa-caret-down mx-2" style={{color:"white"}}></i>
+                  <i className="fa fa-user mx-2" style={{ color: "white" }}></i>{" "}
+                  {U_name}
+                  <i
+                    className="fa fa-caret-down mx-2"
+                    style={{ color: "white" }}
+                  ></i>
                 </button>
 
                 {dropdown && (
@@ -135,6 +138,18 @@ const Navbar = ({ role, setRole, U_name, setName }) => {
                       <i className="fa-solid fa-right-from-bracket mx-2"></i>{" "}
                       Logout
                     </button>
+
+                        <Link
+                          onClick={() => {
+                            setDropdown(!dropdown);
+                          }}
+                          className="dropdown-item"
+                          to={`/messages`}
+                        >
+                          <i className="fa-solid fa-message mx-2"></i>
+                          Messages
+                        </Link>
+                   
                   </div>
                 )}
               </div>

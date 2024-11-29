@@ -255,7 +255,7 @@ const ViewJobs = () => {
                   />
                 )}
                 <div className="filter-btn">
-                  <button className ="btn" nClick={HandleSearch}
+                  <button className ="btn" onClick={HandleSearch}
                    disabled={(!values.filter || !filterval) && (!maxSalary && !minSalary)}
                   >
                     Search

@@ -2,7 +2,7 @@ const db = require("../db");
 
 const getprofile = async (req, res) => {
   const { user_id } = req.user;
-
+ 
   try {
     let sql = "SELECT * FROM profiles WHERE user_id = ?";
     db.query(sql, [user_id], (err, result) => {

@@ -2,13 +2,13 @@ const express = require('express');
 const mysql = require('mysql');
 const app = express();
 
-// configurations for creating mysql connection
+
 const db = mysql.createConnection({
     port:3306,
-    host: 'localhost',     // host for connection
-    database: 'mydb', // database from which we want to connect our node application
-    user: 'root',           // username of the mysql connection
-    password: ''            // password of the mysql connection
+    host: 'localhost',     
+    database: 'job_portal', 
+    user: 'root',           
+    password: 'root'         
 });
 
 // Corrected app.listen
@@ -19,7 +19,7 @@ app.listen(3000, () => {
 // executing connection
 db.connect(function(err) {
     if (err) {
-        console.log("error occurred while connecting");
+        console.log("error occurred while connecting:", err );
     } else {
         console.log("connection created with mysql successfully");
     //     var sql="INSERT INTO USERS (user_id,username,password,email,phone_no,registeration_date) VALUES ?";

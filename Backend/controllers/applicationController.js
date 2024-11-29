@@ -3,7 +3,7 @@ const db = require("../db");
 const applyForJob = (req, res) => {
   const { id } = req.params;
   const { user_id } = req.user;
-
+  console.log(user_id);
   try {
     const check = `SELECT * FROM applications WHERE user_id =  ? AND job_id = ?`;
     db.query(check, [user_id, id], (err, results) => {
@@ -49,7 +49,6 @@ const applyForJob = (req, res) => {
 
 const AppliedJobs = (req, res) => {
   const { user_id } = req.user;
-  console.log(user_id);
   try {
     let sql = `SELECT J.title, J.salary, J.status,A.status AS application_status,A.application_date,A.job_id 
     FROM applications A JOIN job_listings J on A.job_id = J.job_id 
@@ -116,13 +115,13 @@ const DeleteAppliedJob = (req, res) => {
 const viewApplications = async (req,res) => {
   const {user_id} = req.user;
   try {
-      let query =`SELECT A.application_id,A.application_date,U.first_name,U.last_name,A.user_id,
+      let query =`SELECT A.application_id,A.application_date,U.first_name,U.last_name,A.user_id,A.status,
                   J.title, C.company_name, JC.category_name FROM applications A
                   JOIN users U on A.user_id = U.user_id
                   JOIN job_listings J on A.job_id = J.job_id
                   JOIN Employers C ON J.company_id = C.company_id
                   JOIN Job_categories JC ON J.category_id = JC.category_id
-                  WHERE C.employer_id = ?  AND A.status = 'pending'`; 
+                  WHERE C.employer_id = ? `; 
       const data = db.query(query,[user_id],(err,result)=>{
           if (err){
               return res.status(404).send({
@@ -172,6 +171,7 @@ const updateStatus = async (req, res) => {
     });
   }
 };
+
 
 
 

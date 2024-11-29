@@ -2,6 +2,7 @@ const db = require("../db");
 // const express = require('express');
 
 const searchJobs = (req, res) => {
+
   const { filter, filterval,min_salary,max_salary} = req.query;
   let sql;
   if (filter && filterval) {
@@ -9,6 +10,7 @@ const searchJobs = (req, res) => {
        C.company_image,JC.category_name FROM job_listings J join 
        Employers C on J.company_id = C.company_id 
        join job_categories JC on J.category_id = JC.category_id
+       join locations L on J.location_id = L.location_id
        WHERE J.status = 'active' `;
 
     if (filter === "Company") {
@@ -182,7 +184,6 @@ const viewDetails = async (req, res) => {
 const viewPostJob = async (req, res) => {
   try {
     const { user_id } = req.user;
-    console.log(user_id);
     let sql = `SELECT J.job_id, J.title,J.salary,J.status,J.posting_date,C.company_name,
       JC.category_name FROM Job_listings J JOIN 
       Employers C ON J.company_id = C.company_id
@@ -213,4 +214,131 @@ const viewPostJob = async (req, res) => {
   }
 };
 
-module.exports = { searchJobs, getJobs, viewDetails, viewPostJob };
+
+const GetCategory = async (req, res) => {
+  try {
+    let sql = `SELECT category_name, category_description from Job_categories `;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "No Records found",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Category Details",
+        category: result,
+        pages: result.length,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Getting Categories",
+      error,
+    });
+  }
+};
+
+
+
+const SaveJobs = async (req, res) => {
+  const {user_id } = req.user;
+  const {id} = req.params;
+  try {
+    let sql = `INSERT INTO saved_jobs (user_id,job_id) VALUE (? , ? ) `;
+
+    db.query(sql, [user_id,id], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In inserting",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Job Saved Successfully",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Inserting Job",
+      error,
+    });
+  }
+};
+
+
+const DeleteJobs = async (req, res) => {
+  const {user_id } = req.user;
+  const {id} = req.params;
+  try {
+    let sql = `DELETE FROM saved_jobs where user_id = ? AND job_id = ? `;
+
+    db.query(sql, [user_id,id], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In Deleting",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Job Removed Successfully",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Deleting Job",
+      error,
+    });
+  }
+};
+
+const getSavedJobs = async (req,res) =>{
+  const { user_id } = req.user;
+  try {
+    let sql = `SELECT J.title, J.salary, J.status,J.posting_date,S.job_id,JC.category_name 
+    FROM saved_jobs S JOIN job_listings J on S.job_id = J.job_id Join 
+    job_categories JC on J.category_id = JC.category_id WHERE S.user_id = ?`;
+    db.query(sql, [user_id], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In Retrieving Saved Jobs.",
+        });
+      }
+      if (results.length === 0) {
+        return res.status(404).send({
+          success: false,
+          message: "No Record Found",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Saved Jobs",
+        job: results,
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Fetching Saved Jobs",
+      error,
+    });
+  }
+};
+module.exports = { searchJobs, getJobs, viewDetails, viewPostJob,
+                  GetCategory,SaveJobs,DeleteJobs,getSavedJobs };
