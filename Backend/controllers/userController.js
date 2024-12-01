@@ -49,7 +49,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (!results || results.length > 0) {
+    if (!results) {
       
       return res.status(400).json({ message: 'User not found' });
     }
