@@ -6,7 +6,7 @@ const app = express();
 
 const db = mysql.createConnection({
     port:3306,
-    host: 'sql304.infinityfree.com',   
+    host: 'https://php-myadmin.net/db_sql.php?db=if0_37829769_job_portal',   
     user: 'if0_37829769',              
     password: 'hMsh9tma39V',           
     database: 'if0_37829769_job_portal' 
