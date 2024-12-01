@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
-// const session = require('express-session');
+
 const jobRoutes = require('./routes/jobRoutes'); 
 const verifyToken = require('./middleware/verifyToken');
 const profileRoutes = require('./routes/profileRouter'); 
@@ -15,11 +15,15 @@ const { GetCategory } = require('./controllers/jobSearchController');
 const app = express();
 
 
-const PORT = 5000; // Declare PORT once
-// Middleware to parse form data
+const PORT = process.env.PORT || 5000; 
 
 app.use(express.json());
 app.use(cors());
+
+
+app.get('/api/test', (req, res) => {
+  res.send('Backend is working!');
+});
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,10 +49,6 @@ app.get('*', (req, res) => {
 });
 
 
-
-// app.use('/uploads', express.static('uploads'));  // Serve static files
-
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
