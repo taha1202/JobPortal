@@ -12,7 +12,7 @@ const signup = (req, res) => {
       console.error('Database query error:', err);
       return res.status(500).json({ error: 'Database query error' });
     }
-    if (results.length > 0) {
+    if (!results || results.length > 0) {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
@@ -49,7 +49,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (results.length === 0) {
+    if (!results || results.length > 0) {
       
       return res.status(400).json({ message: 'User not found' });
     }
