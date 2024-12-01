@@ -21,10 +21,9 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get('/api/test', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Backend is working!');
 });
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
