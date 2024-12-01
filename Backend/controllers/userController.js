@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
@@ -29,7 +30,7 @@ const signup = (req, res) => {
             return res.status(500).json({ error: 'Error inserting user into database' });
           }
           const user = { user_id: results.insertId, role_id: role_id,first_name:first_name};
-          const token = jwt.sign(user, process.env.JWT_SECRET || 'fallback-secret', { expiresIn: '1d' }); 
+          const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1d' }); 
           console.log(token);
           db.query(`INSERT INTO profiles (user_id) VALUES (?)`,[results.insertId],(err,result)=>{
             if(err) {
@@ -59,9 +60,7 @@ const login = (req, res) => {
       if (isMatch) {
         const token = jwt.sign(
           { user_id: user.user_id, role_id: user.role_id, first_name: user.first_name }, 
-          process.env.JWT_SECRET || 'fallback-secret',
-          { expiresIn: '1d' } 
-        );
+          process.env.JWT_SECRET,{ expiresIn: '1d' } );
         console.log(token);
         res.status(200).json({ message: 'Login successful', token, Uname: user.first_name, role_id: user.role_id,user_id: user.user_id});
       } 
