@@ -7,7 +7,7 @@ const signup = (req, res) => {
   const { first_name, email, password,phone_number, role_id,last_name } = req.body;
 
   
-  db.query('SELECT email FROM users WHERE email = ?', [email], (err, results) => {
+  db.query('SELECT email FROM Users WHERE email = ?', [email], (err, results) => {
     if (err) {
       console.error('Database query error:', err);
       return res.status(500).json({ error: 'Database query error' });
@@ -22,7 +22,7 @@ const signup = (req, res) => {
         return res.status(500).json({ error: 'Error hashing password' });
       }
 
-      db.query('INSERT INTO users (first_name, email, password, phone_number, registration_date, role_id, last_name) VALUES (?, ?, ?, ?,NOW(), ?, ?)',
+      db.query('INSERT INTO Users (first_name, email, password, phone_number, registration_date, role_id, last_name) VALUES (?, ?, ?, ?,NOW(), ?, ?)',
       [first_name, email, hashedPassword, phone_number,role_id,last_name],
         (err, results) => {
           if (err) {

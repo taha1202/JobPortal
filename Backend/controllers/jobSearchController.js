@@ -145,7 +145,7 @@ const viewDetails = async (req, res) => {
       SELECT J.job_id, J.title AS job_title,J.status, J.description AS job_description, J.requirements,
       J.salary,J.posting_date,C.company_name,C.company_description,C.company_image AS picture,
       JC.category_name AS job_category,L.city,L.state,L.country,L.street_name AS street
-      FROM Job_listings J JOIN 
+      FROM job_listings J JOIN 
       Employers C ON J.company_id = C.company_id
       JOIN Job_categories JC ON J.category_id = JC.category_id
       JOIN Locations L ON J.location_id = L.location_id
@@ -185,7 +185,7 @@ const viewPostJob = async (req, res) => {
   try {
     const { user_id } = req.user;
     let sql = `SELECT J.job_id, J.title,J.salary,J.status,J.posting_date,C.company_name,
-      JC.category_name FROM Job_listings J JOIN 
+      JC.category_name FROM job_listings J JOIN 
       Employers C ON J.company_id = C.company_id
       JOIN Job_categories JC ON J.category_id = JC.category_id
       WHERE C.employer_id = ? `;
