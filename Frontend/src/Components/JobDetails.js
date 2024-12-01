@@ -29,7 +29,7 @@ const JobDetails = () => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `http://localhost:5000/api/job-details/${id}`,
+          `https://jobportal-ubcf.onrender.com/api/job-details/${id}`,
           {
             method: "GET",
             headers: {
@@ -62,7 +62,7 @@ const JobDetails = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
-        const response = await fetch(`http://localhost:5000/api/get-profile`,
+        const response = await fetch(`https://jobportal-ubcf.onrender.com/api/get-profile`,
           {
             method: "GET",
             headers: {
@@ -78,7 +78,7 @@ const JobDetails = () => {
         }
         else{
             try {
-                const response = await fetch(`http://localhost:5000/api/apply/${id}`,
+                const response = await fetch(`https://jobportal-ubcf.onrender.com/api/apply/${id}`,
                     {
                       method: "POST",
                       headers: {

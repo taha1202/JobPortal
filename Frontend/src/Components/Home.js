@@ -13,7 +13,7 @@ const Home = ({ role }) => {
     const fetchfeedBacks = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:5000/api/getfeedback", {
+        const response = await fetch("https://jobportal-ubcf.onrender.com/api/getfeedback", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Home = ({ role }) => {
     const fetchCategories = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:5000/api/getcategory", {
+        const response = await fetch("https://jobportal-ubcf.onrender.com/api/getcategory", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -53,7 +53,7 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
            alert("All fields are required!");
           return;
         } else {  
-          const response = await fetch("http://localhost:5000/api/login", {
+          const response = await fetch("https://jobportal-ubcf.onrender.com/api/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -92,7 +92,7 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
           alert("All fields are required!");
           return;
         } else {
-          const response = await fetch("http://localhost:5000/api/signup", {
+          const response = await fetch("https://jobportal-ubcf.onrender.com/api/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

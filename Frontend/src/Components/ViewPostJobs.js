@@ -8,7 +8,7 @@ const ViewPostJobs = () => {
     const fetchPostJobs = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:5000/api/view-postjobs", {
+        const response = await fetch("https://jobportal-ubcf.onrender.com/api/view-postjobs", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const ViewPostJobs = () => {
   const HandleDelete = async (job_id) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/delete-post-jobs/${job_id}`, {
+      const response = await fetch(`https://jobportal-ubcf.onrender.com/api/delete-post-jobs/${job_id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

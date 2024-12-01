@@ -13,7 +13,7 @@ const ViewApplications = () => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          "http://localhost:5000/api/view-applications",
+          "https://jobportal-ubcf.onrender.com/api/view-applications",
           {
             method: "GET",
             headers: {
@@ -37,7 +37,7 @@ const ViewApplications = () => {
   const HandleAccept = async (application_id) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:5000/api/update-status", {
+      const response = await fetch("https://jobportal-ubcf.onrender.com/api/update-status", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const ViewApplications = () => {
   const HandleReject = async (application_id) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:5000/api/update-status", {
+      const response = await fetch("https://jobportal-ubcf.onrender.com/api/update-status", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const ViewApplications = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/schedule-interview/${selectedApplication.user_id}/${selectedApplication.application_id}`,
+        `https://jobportal-ubcf.onrender.com/api/schedule-interview/${selectedApplication.user_id}/${selectedApplication.application_id}`,
         {
           method: "POST",
           headers: {

@@ -39,7 +39,7 @@ const JobLists = ({ id, job_title, company_name, pictureUrl, job_category, salar
   const SaveJob = async (id) =>{
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/save-jobs/${id}`, {
+      const response = await fetch(`https://jobportal-ubcf.onrender.com/api/save-jobs/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const JobLists = ({ id, job_title, company_name, pictureUrl, job_category, salar
   const deleteJob = async(id) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/delete-save-jobs/${id}`, {
+      const response = await fetch(`https://jobportal-ubcf.onrender.com/api/delete-save-jobs/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

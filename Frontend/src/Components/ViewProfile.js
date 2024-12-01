@@ -37,7 +37,7 @@ const ViewProfile = () => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`http://localhost:5000/api/view-applicant-profile/${id}`, {
+        const response = await fetch(`https://jobportal-ubcf.onrender.com/api/view-applicant-profile/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

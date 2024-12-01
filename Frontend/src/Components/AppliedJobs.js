@@ -6,7 +6,7 @@ const AppliedJobs = () => {
     const fetchAppliedJobs = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:5000/api/applied-jobs", {
+        const response = await fetch("https://jobportal-ubcf.onrender.com/api/applied-jobs", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -33,7 +33,7 @@ const AppliedJobs = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/delete-appliedjob/${job_id}`,
+        `https://jobportal-ubcf.onrender.com/api/delete-appliedjob/${job_id}`,
         {
           method: "DELETE",
           headers: {

@@ -23,7 +23,7 @@ const PostJob = () => {
     const fetchCategories = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:5000/api/getcategory", {
+        const response = await fetch("https://jobportal-ubcf.onrender.com/api/getcategory", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const PostJob = () => {
           console.log(`${key}:`, value);
         });
         const uploadResponse = await fetch(
-          "http://localhost:5000/api/upload-image",
+          "https://jobportal-ubcf.onrender.com/api/upload-image",
           {
             method: "POST",
             headers: {
@@ -80,7 +80,7 @@ const PostJob = () => {
         console.log(pictureUrl);
       }
 
-      const response = await fetch("http://localhost:5000/api/post-job", {
+      const response = await fetch("https://jobportal-ubcf.onrender.com/api/post-job", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

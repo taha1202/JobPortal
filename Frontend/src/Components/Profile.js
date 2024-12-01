@@ -47,7 +47,7 @@ const Profile = ({role}) => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:5000/api/view-profile", {
+        const response = await fetch("https://jobportal-ubcf.onrender.com/api/view-profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -112,7 +112,7 @@ const Profile = ({role}) => {
         formData.append("picture", picture);
 
         const uploadResponse = await fetch(
-          "http://localhost:5000/api/upload-image",
+          "https://jobportal-ubcf.onrender.com/api/upload-image",
           {
             method: "POST",
             headers: {
@@ -139,7 +139,7 @@ const Profile = ({role}) => {
           console.log(`file value = ${key}:`, value);
         });
         const uploadResponse = await fetch(
-          "http://localhost:5000/api/upload-resume",
+          "https://jobportal-ubcf.onrender.com/api/upload-resume",
           {
             method: "POST",
             headers: {
@@ -158,7 +158,7 @@ const Profile = ({role}) => {
         console.log("Uploaded Resume URL: ", uploadData.url,"/n" , resumeUrl);
       }
 
-      const response = await fetch("http://localhost:5000/api/edit-profile", {
+      const response = await fetch("https://jobportal-ubcf.onrender.com/api/edit-profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

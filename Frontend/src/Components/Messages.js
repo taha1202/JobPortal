@@ -10,7 +10,7 @@ const Messages = () => {
         const fetchMessages = async () => {
           const token = localStorage.getItem("token");
           try {
-            const response = await fetch("http://localhost:5000/api/get-messages", {
+            const response = await fetch("https://jobportal-ubcf.onrender.com/api/get-messages", {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -51,7 +51,7 @@ const Messages = () => {
           const token = localStorage.getItem("token");
           try {
             const response = await fetch(
-              `http://localhost:5000/api/get-messages/${selectedSender.id}`,
+              `https://jobportal-ubcf.onrender.com/api/get-messages/${selectedSender.id}`,
               {
                 method: "GET",
                 headers: {
@@ -82,7 +82,7 @@ const Messages = () => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `http://localhost:5000/api/send-message/${rec_id}`,
+          `https://jobportal-ubcf.onrender.com/api/send-message/${rec_id}`,
           {
             method: "POST",
             headers: {

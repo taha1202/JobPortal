@@ -28,7 +28,7 @@ const ViewJobs = () => {
         });
 
         const response = await fetch(
-          `http://localhost:5000/api/get-jobs?${queryParams}`,
+          `https://jobportal-ubcf.onrender.com/api/get-jobs?${queryParams}`,
           {
             method: "GET",
             headers: {
@@ -71,7 +71,7 @@ const ViewJobs = () => {
       });
 
       const response = await fetch(
-        `http://localhost:5000/api/search-jobs?${queryParams}`,
+        `https://jobportal-ubcf.onrender.com/api/search-jobs?${queryParams}`,
         {
           method: "GET",
           headers: {

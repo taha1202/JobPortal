@@ -33,7 +33,7 @@ const EditJob = () => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `http://localhost:5000/api/job-details/${id}`,
+          `https://jobportal-ubcf.onrender.com/api/job-details/${id}`,
           {
             method: "GET",
             headers: {
@@ -85,7 +85,7 @@ const EditJob = () => {
           console.log(`${key}:`, value);
         });
         const uploadResponse = await fetch(
-          "http://localhost:5000/api/upload-image",
+          "https://jobportal-ubcf.onrender.com/api/upload-image",
           {
             method: "POST",
             headers: {
@@ -106,7 +106,7 @@ const EditJob = () => {
         pictureUrl = uploadData.url;
         console.log(pictureUrl);
       const response = await fetch(
-        `http://localhost:5000/api/edit-job/${id}`,
+        `https://jobportal-ubcf.onrender.com/api/edit-job/${id}`,
         {
           method: "PATCH",
           headers: {
@@ -129,7 +129,7 @@ const EditJob = () => {
     }
     else{
       const response = await fetch(
-        `http://localhost:5000/api/edit-job/${id}`,
+        `https://jobportal-ubcf.onrender.com/api/edit-job/${id}`,
         {
           method: "PATCH",
           headers: {
