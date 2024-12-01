@@ -6,10 +6,10 @@ const app = express();
 
 const db = mysql.createConnection({
     port:3306,
-    host: 'sql12.freesqldatabase.com',
-    user: 'sql12749006',              
-    password: 'dGRZwQKbqd',           
-    database: 'sql12749006',           
+    host: process.env.DB_HOST,    
+    user: process.env.DB_USER,    
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,           
 });
 
 // Corrected app.listen
