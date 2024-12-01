@@ -47,8 +47,8 @@ const signup = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+  console.log(email,password);
+  db.query('SELECT * FROM Users WHERE email = ?', [email], (err, results) => {
     if (results <= 0) {
       
       return res.status(400).json({ message: 'User not found' });
