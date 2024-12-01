@@ -26,7 +26,7 @@ const JobLists = ({ id, job_title, company_name, pictureUrl, job_category, salar
     e.preventDefault();
     const newColor = colour === "white" ? "goldenrod" : "white";
     setColor(newColor);
-    localStorage.setItem(`job-${id}-${user.Uid}-color`, newColor); // Save the new state in localStorage
+    localStorage.setItem(`job-${id}-${user.Uid}-color`, newColor); 
 
     if (newColor === "white") {
       SaveJob(id);

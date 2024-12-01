@@ -31,6 +31,29 @@ const ViewPostJobs = () => {
     fetchPostJobs();
   }, []);
 
+  const HandleDelete = async (job_id) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`http://localhost:5000/api/delete-post-jobs/${job_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch delete details");
+      }
+      alert("Job Deleted Successfully");
+      const data = await response.json();
+      setJobs(jobs.filter((job) => job.job_id !== job_id));;
+      console.log(data.jobs);
+    } catch (err) {
+      console.error("Error deleting jobs details:", err);
+    }
+  };
+
   return (
     <div className="post-jobs-container">
       <h2 className="post-jobs-title">My Posted Jobs</h2>
@@ -63,12 +86,13 @@ const ViewPostJobs = () => {
                 <td>
                   <button
                     className="btn btn-danger mx-1"
+                    onClick={ () => HandleDelete(job.job_id)}
                   >
                    <i className="fa-solid fa-trash"></i>
                   </button>
                   <Link
                     className="btn btn-primary mx-1"
-                    // to={`/viewdetails/${job.job_id}`}
+                    to={`/editjob/${job.job_id}`}
                   >
                     <i className="fa-regular fa-pen-to-square"></i>
                   </Link>

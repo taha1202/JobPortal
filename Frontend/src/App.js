@@ -3,7 +3,7 @@ import Home from './Components/Home';
 import Login from './Components/Login';
 import Navbar from './Components/Navbar';
 import ViewPostJobs from './Components/ViewPostJobs';
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import PostJob from './Components/PostJob';
 import Profile from './Components/Profile';
 import ViewJobs from './Components/ViewJobs';
@@ -21,6 +21,8 @@ import {
 } from "react-router-dom";
 import Messages from './Components/Messages';
 import SaveJobs from './Components/SaveJobs';
+import EditJob from './Components/EditJob';
+import StarterPage from './Components/StarterPage';
 
 
 
@@ -30,7 +32,19 @@ function App() {
   // const navigate = useNavigate();
   const [role, setRole] = useState("");
   const [U_name, setName] =  useState("");
-  
+  const [showStarterPage, setShowStarterPage] = useState(true); 
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowStarterPage(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [showStarterPage]);
+
+ 
+  if (showStarterPage) {
+    return <StarterPage/>;
+  }
   return (
     <>
        <Router>
@@ -40,7 +54,7 @@ function App() {
 
           <Route path="/" element=  {<Home role={role}/>}/>  
           
-          <Route path="/login" element=  {<Login setRole={setRole} setName={setName}/>}/>   
+          <Route path="/login" element=  {<Login setRole={setRole} setName={setName} setShowStarterPage={setShowStarterPage}/>}/>   
            
           {role  && (
           <>
@@ -58,7 +72,7 @@ function App() {
           <Route path="/viewpostjob"  element=  {<ViewPostJobs/>}/>
           <Route path="/view-applications"  element=  {<ViewApplications/>}/>
           <Route path='/viewprofile/:id' element={<ViewProfile/>}/>
-          
+          <Route path="/editjob/:id"  element=  {<EditJob/>}/>
           </>
           )}
            {role === 1 && (

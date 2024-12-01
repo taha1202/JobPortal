@@ -62,16 +62,15 @@ body {
 
 /* starter page CSS */
 
-/* Styling for the 3D starter page */
-
 .starter-container {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(120deg, #003f7d, #00aaff);
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .starter-page {
@@ -85,56 +84,73 @@ body {
 
 .computer-container {
   position: relative;
-  perspective: 800px;
+  perspective: 1000px;
   transform-style: preserve-3d;
-  animation: rotate 10s infinite linear;
+  animation: rotate3D 10s infinite linear; /* Smooth 3D rotation animation */
 }
 
 .computer-frame {
-  width: 300px;
+  width: 320px;
   height: 200px;
   background: #333;
   border-radius: 10px;
   position: relative;
-  transform: rotateX(-15deg) rotateY(25deg);
-  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-style: preserve-3d;
 }
 
 .screen {
   width: 90%;
   height: 70%;
-  margin: 5%;
-  background: linear-gradient(135deg, #00ffdc, #007dff);
-  border-radius: 5px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(0, 150, 255, 0.5);
+  position: absolute;
+  backface-visibility: hidden; /* Hide the back when not facing the user */
+}
+
+.front {
+  transform: rotateY(0deg); /* Front side faces the user */
+}
+
+.back {
+  transform: rotateY(180deg); /* Back side appears properly */
 }
 
 .welcome-text {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #fff;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 3px 5px rgba(0, 0, 0, 0.3), 0 0 10px #00eaff;
+  text-align: center;
 }
 
 .keyboard {
-  width: 100%;
+  width: 80%;
   height: 30px;
   background: #444;
-  position: absolute;
-  bottom: -20px;
+  margin-top: 10px;
   border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  transform: translateZ(10px); /* Adds depth to the keyboard */
 }
 
 .base {
   width: 50%;
   height: 10px;
   background: #444;
-  position: absolute;
-  bottom: -40px;
+  margin-top: 10px;
   border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateZ(5px); /* Adds depth to the base */
 }
 
 .floating-effect {
@@ -143,11 +159,14 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  animation: float 6s infinite ease-in-out;
+  animation: float 6s infinite ease-in-out, rotate-circle 10s infinite linear;
 }
 
-@keyframes rotate {
+@keyframes rotate3D {
   0% {
     transform: rotateX(-15deg) rotateY(0deg);
   }
@@ -158,12 +177,22 @@ body {
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translate(-50%, -50%) translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translate(-50%, -50%) translateY(-20px);
   }
 }
+
+@keyframes rotate-circle {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 
 
 /* Navbar CSS */
@@ -481,6 +510,32 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+.custom-dropdown select {
+  max-height: 2.5rem; /* Adjust height for a compact dropdown */
+  overflow: hidden; /* Ensure the dropdown doesn't stretch by default */
+}
+
+.custom-dropdown select:focus {
+  overflow-y: auto; 
+  max-height: 10rem; 
+}
+
+.form-select option {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.custom-dropdown {
+  position: relative;
+}
+
+.custom-dropdown select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
 
 .post-job-form .btn:hover {
   background-color: #444;
@@ -788,6 +843,7 @@ body {
   justify-content: space-between;
   gap: 20px; /* Add space between cards */
 }
+
 .card {
   display: flex;
   flex-direction: column;
@@ -856,11 +912,7 @@ font-size: large;
 margin-top: 15px;
 }
 
-/* .card-text {
-  max-height: 100px; 
-  overflow: hidden;
-  text-overflow: ellipsis;
-} */
+
 
 @media (max-width: 768px) {
   .job-list {
@@ -1076,25 +1128,185 @@ margin-top: 15px;
   font-weight: bold;
 }
 
+
 /* Applications CSS */
 
-
-.application-container {
-  padding: 20px;
+/* Modal Styling */
+.modal {
+  display: flex; 
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  background-color: rgb(28, 209, 233);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.application-title {
-  text-align: center;
-  margin-bottom: 20px;
+.modal-content {
+  background: rgb(0, 0, 0);
   color: white;
-  font-size: 24px;
+  padding: 30px;
+  border-radius: 12px;
+  width: 600px;
+  text-align: center;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modal-content button {
+  padding: 10px 15px;
+  background-color: #075e54;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #064a45;
+}
+
+
+.applications-container {
+  padding: 20px;
+  background-color: #818181;
+  min-height: 100vh;
+}
+
+.applications-container h2 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 20px;
   font-weight: bold;
 }
+
+/* Applications List */
+.applications-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Card Styling */
+.application-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 450px;
+  min-height: 300px;
+  background-color: rgba(2, 3, 5, 0.938);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-top: 20px;
+}
+
+.application-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.application-card h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: goldenrod;
+  font-weight: bold;
+}
+
+.application-card h5 {
+  margin: 10px 0;
+  color: white;
+}
+
+/* Button Styling */
+.application-card .btn {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  color: #000;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.application-card .meet-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  margin-right: 5px;
+  cursor: pointer;
+  background: #f1c40f;
+}
+
+.application-card .meet-button:hover{
+  color: #ffffff;
+  background-color: #cca405;
+} 
+
+
+.btn-success {
+  background-color: #28a745;
+  color: #000000;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  color: #ffffff
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #000000;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  color: #ffffff
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #000000;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  color: #ffffff
+}
+
 
 /* FeedBack Form CSS */
 
@@ -1340,68 +1552,7 @@ margin-top: 15px;
   background-color: #064a45;
 }
 
-/* Modal Styling */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  width: 400px;
-  text-align: center;
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #888;
-}
-
-.close-button:hover {
-  color: #000;
-}
-
-.modal-content input {
-  width: 100%;
-  padding: 10px;
-  margin: 20px 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.modal-content button {
-  padding: 10px 15px;
-  background-color: #075e54;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.modal-content button:hover {
-  background-color: #064a45;
-}
-
-
 /* save Jobs CSS */
-
 
 .save-jobs-container {
   padding: 20px;
@@ -1461,6 +1612,84 @@ margin-top: 15px;
   z-index: 10;
   opacity: 1;
   transition: opacity 0.3s ease;
+}
+
+
+
+.job-details-wrapper {
+  margin: 2rem auto;
+  max-width: 900px;
+  font-family: "Arial", sans-serif;
+  background: #053f35;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.job-image-container {
+  text-align: center;
+  
+}
+
+.job-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.job-content {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #2d035e;
+  border-radius: 10px;
+}
+
+.job-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.job-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color:  #f39c12;
+  font-weight: bold;
+}
+
+.job-section p {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.job-section input,
+.job-section textarea,
+.job-section select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+  background-color: white;
+}
+
+.job-section button {
+  background: #f1c40f;
+  color: rgb(0, 0, 0);
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.job-section button:hover {
+  background-color:  #cca405;
+  color: white;
 }
 
 

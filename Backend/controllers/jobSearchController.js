@@ -142,14 +142,14 @@ const viewDetails = async (req, res) => {
   try {
     const { id } = req.params;
     const sql = `
-      SELECT J.job_id, J.title AS job_title, J.description AS job_description, J.requirements,
+      SELECT J.job_id, J.title AS job_title,J.status, J.description AS job_description, J.requirements,
       J.salary,J.posting_date,C.company_name,C.company_description,C.company_image AS picture,
       JC.category_name AS job_category,L.city,L.state,L.country,L.street_name AS street
       FROM Job_listings J JOIN 
       Employers C ON J.company_id = C.company_id
       JOIN Job_categories JC ON J.category_id = JC.category_id
       JOIN Locations L ON J.location_id = L.location_id
-      WHERE J.job_id = ? AND J.status = 'active'`;
+      WHERE J.job_id = ?`;
 
     db.query(sql, id, (err, result) => {
       if (err) {
@@ -340,5 +340,119 @@ const getSavedJobs = async (req,res) =>{
     });
   }
 };
-module.exports = { searchJobs, getJobs, viewDetails, viewPostJob,
-                  GetCategory,SaveJobs,DeleteJobs,getSavedJobs };
+
+
+const ScheduleInterview = async (req, res) => {
+  const {user_id } = req.user;
+  const {J_id,A_id} = req.params;
+  const {interview} = req.body
+  if(!interview || (interview  < new Date())) {
+    return res.status(404).send({
+      success: false,
+      message: "Error In inserting",
+    });
+  }
+
+  try {
+    let sql = `INSERT INTO interviews (employer_id,job_seeker_id,application_id,interview_date) 
+              VALUE (?, ?, ?,? ) `;
+
+    db.query(sql, [user_id,J_id,A_id,interview], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In inserting",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Interview Scheduled Successfully.",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Scheduling Interview",
+      error,
+    });
+  }
+};
+
+
+const updatePostJob = async (req, res) => {
+  let sql;
+  try {
+    const {field,update} = req.body;
+    console.log(field, update);
+    const {id} = req.params;
+    if(update === "job_title" && field){
+      sql = `UPDATE job_listings SET title = ? WHERE job_id = ?`;
+    }
+    if(update === "job_description" && field) {
+      sql = `UPDATE job_listings SET description = ? WHERE job_id = ?`;
+    }
+
+    if((update === "status" || update === "salary" || update === "requirements") && field) {
+      sql = `UPDATE job_listings SET ${update} = ? WHERE job_id = ?`;
+    }
+
+    else if (field){
+      sql = `UPDATE employers SET ${update} = ? 
+       WHERE company_id = (SELECT company_id FROM job_listings WHERE job_id = ? )`;
+    }
+    db.query(sql, [field,id],(err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send({
+          success: false,
+          message: "Error In Updating Data",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message:"Job Edited Successfully",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Editing Job API",
+      error,
+    });
+  }
+};
+
+const DeletePostJobs = async (req, res) => {
+  const {id} = req.params;
+  try {
+    let sql = `DELETE FROM job_listings where job_id = ? `;
+
+    db.query(sql, [id], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In Deleting",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Job Removed Successfully",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Deleting Job",
+      error,
+    });
+  }
+};
+
+
+module.exports = { searchJobs, getJobs, viewDetails, viewPostJob,DeletePostJobs,
+                  GetCategory,SaveJobs,DeleteJobs,getSavedJobs,ScheduleInterview,updatePostJob };

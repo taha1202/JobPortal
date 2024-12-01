@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 const PostJob = () => {
   const navigate = useNavigate();
@@ -17,13 +17,40 @@ const PostJob = () => {
     street: "",
     picture: "",
   });
-  
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch("http://localhost:5000/api/getcategory", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch Categories");
+        }
+
+        const data = await response.json();
+        setCategories(data.category || []);
+        console.log(data.category);
+      } catch (err) {
+        console.error("Error fetching Categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const HandleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
       let pictureUrl = "";
-      // console.log("pic = ", values.picture);
       if (values.picture) {
         const formData = new FormData();
         formData.append("picture", values.picture);
@@ -49,7 +76,7 @@ const PostJob = () => {
         }
 
         console.log(uploadData.url);
-        pictureUrl = uploadData.url; 
+        pictureUrl = uploadData.url;
         console.log(pictureUrl);
       }
 
@@ -95,7 +122,6 @@ const PostJob = () => {
         [name]: value,
       });
     }
-    
   };
 
   return (
@@ -135,16 +161,25 @@ const PostJob = () => {
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="validationDefault06">Job Category</label>
-              <input
-                type="text"
-                className="form-control"
-                id="validationDefault06"
-                placeholder="Enter Job Category"
-                name="job_category"
-                value={values.job_category}
-                onChange={HandleOnChange}
-                required
-              />
+              <div className="custom-dropdown">
+                <select
+                  className="form-select"
+                  id="validationDefault11"
+                  required
+                  name="job_category"
+                  value={values.job_category}
+                  onChange={HandleOnChange}
+                >
+                  <option value="" disabled>
+                    Select Category
+                  </option>
+                  {categories.map((category, index) => (
+                    <option value={category.category_name} key={index}>
+                      {category.category_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="form-group">
@@ -215,7 +250,7 @@ const PostJob = () => {
                 id="validationDefault10"
                 placeholder="Enter salary"
                 name="salary"
-                value={values.salary}
+                value={values.salary === 0 ? "" : values.salary}
                 onChange={HandleOnChange}
                 required
               />
@@ -238,7 +273,7 @@ const PostJob = () => {
               </select>
             </div>
           </div>
-          
+
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="validationDefault05">City</label>

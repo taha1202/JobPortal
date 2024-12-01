@@ -5,10 +5,11 @@ const path = require('path');
 const imageStorage = multer.diskStorage({
 
   destination: (req, picture, cb) => {
+
+    console.log(picture);
     const uploadDir = path.resolve(__dirname, '..', 'uploads', 'images'); 
     console.log("Uploading to:", uploadDir);  
     cb(null, uploadDir);
-
   },
   filename: (req, picture, cb) => {
     cb(null, `${Date.now()}-${picture.originalname}`);

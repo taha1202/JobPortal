@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
-const Login = ({ setRole, setName}) => {
+const Login = ({ setRole, setName, setShowStarterPage}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -52,9 +52,7 @@ const Login = ({ setRole, setName}) => {
         if (!credentials.email || !credentials.password) {
            alert("All fields are required!");
           return;
-        } else {
-          // Handle Login
-           
+        } else {  
           const response = await fetch("http://localhost:5000/api/login", {
             method: "POST",
             headers: {
@@ -75,6 +73,7 @@ const Login = ({ setRole, setName}) => {
             localStorage.setItem("token", data.token); 
             setRole(data.role_id);
             setName(data.Uname);
+            setShowStarterPage(true);
             navigate("/"); // Redirect to homepage
             alert("Login successful!");
           } else {
@@ -117,6 +116,7 @@ const Login = ({ setRole, setName}) => {
             localStorage.setItem("token", data.token); 
             setRole(data.role_id);
             setName(data.Uname);
+            setShowStarterPage(true);
             navigate("/"); // Redirect to homepage
             alert("Signup successful!");
           } else {
@@ -131,9 +131,9 @@ const Login = ({ setRole, setName}) => {
   };
 
   const HandleChange = (e) => {
-    const { name, value } = e.target; // Destructure name and value
+    const { name, value } = e.target;
     if (isLogin) {
-      // For login, update the credentials
+      
       setCredentials({
         ...credentials,
         [name]: value,
