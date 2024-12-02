@@ -29,25 +29,25 @@ const Profile = ({ role }) => {
   });
   const [notes, setNotes] = useState(false);
 
-  const convertPathToUrl = (localPath) => {
-    if (
-      localPath ===
-      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-    ) {
-      return localPath;
-    }
-    const baseUrl = "http://localhost:5000/uploads/images/";
-    const fileName = localPath.split("uploads\\images\\")[1];
-    return baseUrl + fileName;
-  };
+  // const convertPathToUrl = (localPath) => {
+  //   if (
+  //     localPath ===
+  //     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+  //   ) {
+  //     return localPath;
+  //   }
+  //   const baseUrl = "http://localhost:5000/uploads/images/";
+  //   const fileName = localPath.split("uploads\\images\\")[1];
+  //   return baseUrl + fileName;
+  // };
 
-  const convertResumeToUrl = (localPath) => {
-    if (localPath) {
-      const baseUrl = "http://localhost:5000/uploads/resume/";
-      const fileName = localPath.split("uploads\\resume\\")[1];
-      return baseUrl + fileName;
-    }
-  };
+  // const convertResumeToUrl = (localPath) => {
+  //   if (localPath) {
+  //     const baseUrl = "http://localhost:5000/uploads/resume/";
+  //     const fileName = localPath.split("uploads\\resume\\")[1];
+  //     return baseUrl + fileName;
+  //   }
+  // };
   useEffect(() => {
     const fetchEmpProfile = async () => {
       const token = localStorage.getItem("token");
@@ -257,13 +257,15 @@ const Profile = ({ role }) => {
       }
     }
   };
-  resumePreview = convertResumeToUrl(resume);
+  // resumePreview = convertResumeToUrl(resume);
+  console.log(picturePreview);
+  
   return (
     <div className="profile-container">
       <div className="view-profile">
         <div className="profile-picture-container">
           <img
-            src={picturePreview || convertPathToUrl(values.profile_pic)}
+            src={picturePreview || values.profile_pic}
             alt="profile"
             className="profile-picture"
           />

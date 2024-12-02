@@ -128,7 +128,7 @@ const editProfile = async (req, res) => {
         });
       }
       sql = `UPDATE Users SET first_name = ?, last_name = ? WHERE user_id = ?`
-      db.query(sql, [add_notes,user_id],(err, result) => {
+      db.query(sql, [first_name, last_name,user_id],(err, result) => {
         if (err) {
           console.error(err);
           return res.status(500).send({
@@ -213,14 +213,14 @@ const viewEmployerProfile = async (req, res) => {
           }
         });
       }
-      sql = `SELECT U.first_name, U.last_name, P.notes,Count(A.application_id) as totalApplication,
+      sql = `SELECT U.first_name, U.last_name, P.notes,P.profile_pic,Count(A.application_id) as totalApplication,
           Count(J.job_id) as active_jobs FROM profiles P
           JOIN Users U on P.user_id = U.user_id 
           JOIN employers C on P.user_id = C.employer_id
           JOIN job_listings J on C.company_id = J.company_id
           JOIN applications A on J.job_id = A.job_id
           WHERE P.user_id = ? AND J.status = 'active'
-          group by U.first_name, U.last_name, P.notes`;
+          group by U.first_name, U.last_name, P.notes, P.profile_pic`;
 
       db.query(sql, [user_id], (err, result) => {
         if (err) {
@@ -266,7 +266,7 @@ const editEmployerProfile = async (req, res) => {
         });
       }
       sql = `UPDATE Users SET first_name = ?, last_name = ? WHERE user_id = ?`
-      db.query(sql, [add_notes,user_id],(err, result) => {
+      db.query(sql, [first_name, last_name,user_id],(err, result) => {
         if (err) {
           console.error(err);
           return res.status(500).send({
