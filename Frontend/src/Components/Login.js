@@ -6,7 +6,8 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-  
+  const [forgot, setForgot] = useState(false);
+  const [ResetMail, setResetMail] = useState("");
   const [values, setValues] = useState({
     f_name: "",
     l_name: "",
@@ -21,8 +22,6 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
     password: "",
   });
   useEffect(() => {
-    
-    
     const params = new URLSearchParams(location.search);
     setIsLogin(params.get("mode") === "login");
 
@@ -147,6 +146,35 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
     }
   };
 
+  const HandlePassword = async ()=> {
+    try {
+      const response = await fetch(
+        "https://jobportal-ubcf.onrender.com/api/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: ResetMail,
+          }),
+        }
+      );
+      const data = await response.json(); 
+      if (!response.ok) { 
+        alert(data.message);
+        throw new Error("Failed to Send Mail");
+      }
+      
+      console.log(data);
+      setForgot(false);
+      alert("Temporary Password is send to the provided Mail.");
+
+    } catch (err) {
+      console.error("Error Sending mail:", err);
+    }
+  };
+
   return (
     <>
     <h1 className="text-center my-3" style={{color:"white", fontWeight: "bold"}} >
@@ -190,8 +218,35 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
                     required
                   />
                 </div>
-                <p> Forgot Password</p>
-
+                <p onClick={()=> setForgot(true)}> Forgot Password</p>
+                {forgot === true && (
+                  <>
+                    <div id="customModal" class="modal">
+              <div class="modal-content">
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name">Email</label>
+                    <input
+                      type="email"
+                      id="recipient-name"
+                      class="form-control"
+                      value={ResetMail}
+                      onChange={(e) => setResetMail(e.target.value)}
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="closeModalFooter" class="btn btn-secondary" onClick={()=> setForgot(false)}>
+                  Close
+                </button>
+                <button class="btn btn-secondary" onClick={HandlePassword}>Send Mail</button>
+              </div>
+            </div>
+          </div>
+                  </>
+                )}
                 <div className="d-grid gap-2 col-10 mx-auto" onClick={HandleSubmit}>
                   <button className="btn btn-primary" type="button">
                     Login

@@ -2,6 +2,8 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const signup = (req, res) => {
   const { first_name, email, password,phone_number, role_id,last_name } = req.body;
@@ -73,8 +75,73 @@ const login = (req, res) => {
 };
 
 
+const ForgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    db.query("SELECT * FROM Users WHERE email = ?", [email], async (err, results) => {
+      if (err) {
+        console.error("Error finding email:", err);
+        return res.status(500).json({ error: "Error finding email" });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const user_id = results[0].user_id;
+
+      const tempPassword = crypto.randomBytes(6).toString("hex");
+      const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+      db.query(
+        "UPDATE Users SET password = ? WHERE user_id = ?",
+        [hashedPassword, user_id],
+        async (err) => {
+          if (err) {
+            console.error("Error updating password:", err);
+            return res.status(500).json({ message: "Error updating password" });
+          }
+
+          const transporter = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+              user: process.env.EMAIL, 
+              pass: process.env.EMAIL_PASSWORD, 
+            },
+          });
+
+          const mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: "Password Reset Request",
+            text: `Hello, 
+
+We have received a request to reset your password. Your temporary password is: ${tempPassword}
+
+Please log in using this temporary password and reset it immediately.
+
+Thank you!`,
+          };
+
+          try {
+            await transporter.sendMail(mailOptions);
+            res.status(200).json({ message: "Temporary password sent to your email" });
+          } catch (emailError) {
+            console.error("Error sending email:", emailError);
+            res.status(500).json({ message: "Failed to send the temporary password email" });
+          }
+        }
+      );
+    });
+  } catch (error) {
+    console.error("Error in forgot password:", error);
+    res.status(500).json({ message: "An unexpected error occurred. Please try again." });
+  }
+};
 
 
 
 
-module.exports = {signup,login};
+
+module.exports = {signup,login,ForgotPassword};
