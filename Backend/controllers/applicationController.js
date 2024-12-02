@@ -119,7 +119,7 @@ const viewApplications = async (req,res) => {
                   J.title, C.company_name, JC.category_name FROM applications A
                   JOIN users U on A.user_id = U.user_id
                   JOIN job_listings J on A.job_id = J.job_id
-                  JOIN Employers C ON J.company_id = C.company_id
+                  JOIN employers C ON J.company_id = C.company_id
                   JOIN Job_categories JC ON J.category_id = JC.category_id
                   WHERE C.employer_id = ? `; 
       const data = db.query(query,[user_id],(err,result)=>{
