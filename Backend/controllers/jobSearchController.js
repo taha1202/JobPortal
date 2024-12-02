@@ -353,10 +353,9 @@ const ScheduleInterview = async (req, res) => {
       message: "Error In inserting",
     });
   }
-
   try {
-    let sql = `INSERT INTO interviews (employer_id,job_seeker_id,application_id,interview_date) 
-              VALUE (?, ?, ?,? ) `;
+    let sql = `INSERT INTO interviews (employer_id,job_seeker_id,application_id,interview_date,status) 
+              VALUE (?, ?, ?, ?,'scheduled' ) `;
 
     db.query(sql, [user_id,J_id,A_id,interview], (err, result) => {
       if (err) {
@@ -454,6 +453,74 @@ const DeletePostJobs = async (req, res) => {
   }
 };
 
+const CheckInterview = async (req, res) => {
+  const {user_id } = req.user;
+  const {J_id,A_id} = req.params;
+  try {
+    let sql = `SELECT status FROM interviews WHERE employer_id = ? AND 
+           job_seeker_id = ? AND application_id = ? `;
 
-module.exports = { searchJobs, getJobs, viewDetails, viewPostJob,DeletePostJobs,
-                  GetCategory,SaveJobs,DeleteJobs,getSavedJobs,ScheduleInterview,updatePostJob };
+    db.query(sql, [user_id,J_id,A_id,interview], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In inserting",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        status: result[0].status,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Scheduling Interview",
+      error,
+    });
+  }
+};
+
+const UpdateInterview = async (req, res) => {
+  const {user_id } = req.user;
+  const {J_id,A_id} = req.params;
+  const {interview} = req.body
+  if(!interview || (interview  < new Date())) {
+    return res.status(404).send({
+      success: false,
+      message: "Error In inserting",
+    });
+  }
+  try {
+    let sql = `UPDATE interviews SET interview_date = ? WHERE 
+            employer_id = ? AND job_seeker_id = ? AND application_id = ? `;
+
+    db.query(sql, [interview,user_id,J_id,A_id], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(404).send({
+          success: false,
+          message: "Error In inserting",
+        });
+      }
+      res.status(200).send({
+        success: true,
+        message: "Interview Re-Scheduled Successfully.",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Scheduling Interview",
+      error,
+    });
+  }
+};
+
+
+module.exports = { searchJobs, getJobs, viewDetails, viewPostJob,DeletePostJobs,UpdateInterview,
+                  GetCategory,SaveJobs,DeleteJobs,getSavedJobs,ScheduleInterview,updatePostJob,
+                  CheckInterview };

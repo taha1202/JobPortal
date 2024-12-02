@@ -81,8 +81,51 @@ const ViewApplications = () => {
     setIsModalOpen(true);
   };
 
+  const CheckInterview =async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `https://jobportal-ubcf.onrender.com/api/check-status/${selectedApplication.user_id}/${selectedApplication.application_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) { 
+        throw new Error(data.message || "Failed to Get Interview Status");
+      }
+      const status = data.status;
+      if(status === "scheduled")
+      {
+        const response = await fetch(
+          `https://jobportal-ubcf.onrender.com/api/update-interview/${selectedApplication.user_id}/${selectedApplication.application_id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ interview: interviewDate }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Failed to schedule interview");
+        alert("Interview Re-Scheduled Successfully");
+        setIsModalOpen(false);
+      }
+      
+    } catch (error) {
+      console.error("Error scheduling interview:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
   const handleSaveInterview = async () => {
-    
+    CheckInterview();
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
