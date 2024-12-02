@@ -1,7 +1,7 @@
 const express = require('express');
 const { signup, login} = require('../controllers/userController');
 const router = express.Router();
-
+const upload = require('../middleware/upload');
 
 router.post('/upload-resume', upload.single('U_resume'), (req, res) => {
   if (!req.file) {
