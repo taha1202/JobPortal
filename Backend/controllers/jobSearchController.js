@@ -458,7 +458,7 @@ const CheckInterview = async (req, res) => {
   const {J_id,A_id} = req.params;
   console.log(user_id,J_id,A_id);
   try {
-    let sql = `SELECT interview_id FROM interviews WHERE employer_id = ? AND 
+    let sql = `SELECT interview_id,status FROM interviews WHERE employer_id = ? AND 
            job_seeker_id = ? AND application_id = ? `;
     db.query(sql, [user_id,J_id,A_id], (err, result) => {
       if (err) {
