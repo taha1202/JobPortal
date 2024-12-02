@@ -20,16 +20,15 @@ const PORT = process.env.PORT || 10000;
 app.use(express.json());
 app.use(cors());
 
-
-app.get('/', (req, res) => {
-  res.send('Backend is working!');
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/', (req, res) => {
+  res.send('Backend is working!');
+});
 
 app.get('/api/getfeedback',Getfeedback);
 app.get('/api/getcategory',GetCategory);

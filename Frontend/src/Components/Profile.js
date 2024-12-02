@@ -141,6 +141,32 @@ const Profile = ({ role }) => {
     const token = localStorage.getItem("token");
     if (role === 2) {
       try {
+        let profilePicUrl = values.profile_pic;
+        if (picture) {
+          const formData = new FormData();
+          formData.append("picture", picture);
+
+          const uploadResponse = await fetch(
+            "https://jobportal-ubcf.onrender.com/api/upload-image",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formData,
+            }
+          );
+
+          const uploadData = await uploadResponse.json();
+
+          if (!uploadResponse.ok) {
+            throw new Error(uploadData.message || "Failed to upload picture.");
+          }
+
+          profilePicUrl = uploadData.url;
+          console.log("Uploaded Picture URL:", profilePicUrl);
+        }
+
         const response = await fetch(
           "https://jobportal-ubcf.onrender.com/api/edit-emp-profile",
           {
@@ -151,6 +177,7 @@ const Profile = ({ role }) => {
             },
             body: JSON.stringify({
               ...values,
+              profile_pic: profilePicUrl,
             }),
           }
         );
@@ -160,6 +187,7 @@ const Profile = ({ role }) => {
           alert("Profile Updated Successfully");
           setValues((prevValues) => ({
             ...prevValues,
+            profile_pic: profilePicUrl,
           }));
         } else {
           alert(data.message || "Failed to update profile!");

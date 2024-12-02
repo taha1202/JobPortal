@@ -1,12 +1,31 @@
 const express = require('express');
-const { signup, login, uploadResume, uploadImages, GiveFeedBack, Getfeedback} = require('../controllers/userController');
+const { signup, login} = require('../controllers/userController');
 const router = express.Router();
-const {uploadImage,uploadRes} = require('../middleware/upload');  
+const { uploadS3 } = require('./middleware/upload');
 
+
+router.post('/upload-resume', uploadS3.single('U_resume'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    res.status(200).json({
+      message: 'Resume uploaded successfully',
+      url: req.file.location, 
+    });
+  });
+  
+
+  router.post('/upload-image', uploadS3.single('picture'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    res.status(200).json({
+      message: 'Image uploaded successfully',
+      url: req.file.location, 
+    });
+  });
 
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/upload-resume', uploadRes.single('U_resume'), uploadResume);
-router.post('/upload-image', uploadImage.single('picture'), uploadImages);
 
 module.exports = router;
