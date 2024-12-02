@@ -148,7 +148,7 @@ const viewDetails = async (req, res) => {
       FROM job_listings J JOIN 
       employers C ON J.company_id = C.company_id
       JOIN Job_categories JC ON J.category_id = JC.category_id
-      JOIN Locations L ON J.location_id = L.location_id
+      JOIN locations L ON J.location_id = L.location_id
       WHERE J.job_id = ?`;
 
     db.query(sql, id, (err, result) => {

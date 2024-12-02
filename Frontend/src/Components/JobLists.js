@@ -12,12 +12,11 @@ const JobLists = ({ id, job_title, company_name, pictureUrl, job_category, salar
   const localUrl = convertPathToUrl(pictureUrl);
   const storedUser = localStorage.getItem("user");
   const user = JSON.parse(storedUser);
-  console.log(user.Uid);
+  
     
 
     useEffect(() => {
     const savedColor = localStorage.getItem(`job-${id}-${user.Uid}-color`);
-    console.log(savedColor);
     if (savedColor) {
       setColor(savedColor);
     }
