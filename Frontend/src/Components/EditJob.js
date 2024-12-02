@@ -57,12 +57,6 @@ const EditJob = () => {
     fetchJobDetails();
   }, [id]);
 
-  const convertPathToUrl = (localPath) => {
-    const baseUrl = "http://localhost:5000/uploads/images/";
-    const fileName = localPath.split("\\uploads\\images\\")[1];
-    return baseUrl + fileName;
-  };
-
   const handleEditToggle = (field) => {
     setEditing((prev) => ({ ...prev, [field]: !prev[field] }));
   };
@@ -159,7 +153,7 @@ const EditJob = () => {
     .split("/n")
     .map((req, index) => <p key={index}>{req}</p>);
 
-  const localUrl = job.picture ? convertPathToUrl(job.picture) : "";
+  
 
   if (loading)
     return (
@@ -180,7 +174,7 @@ const EditJob = () => {
               style={{backgroundColor:"white"}}
             />
           ) : (
-            <img src={localUrl} alt="Company" className="job-image" />
+            <img src={job.picture} alt="Company" className="job-image" />
           )}
           <button
             className="edit-btn"

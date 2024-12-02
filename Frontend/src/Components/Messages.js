@@ -79,6 +79,7 @@ const Messages = () => {
   
     // Handle sending a message
     const handleSendMessage = async (rec_id) => {
+      console.log("Receiver: ", rec_id);
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
@@ -135,7 +136,6 @@ const Messages = () => {
             </h3>
           </div>
   
-          {/* Chat Messages */}
           <div className="chat-messages">
             {messages.map((msg, index) => (
               <div
@@ -157,7 +157,7 @@ const Messages = () => {
             />
             <button
               onClick={() =>
-                handleSendMessage(selectedSender)
+                handleSendMessage(selectedSender.id)
               }
             >
               Send

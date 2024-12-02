@@ -112,11 +112,11 @@ const SendMessage = async (req, res) => {
             message: "No Records found",
           });
         }
-        console.log(result[0]);
+        console.log("Sender ID = ", result[0].sender_id);
         res.status(200).send({
           success: true,
           message: "Message Received Successfully",
-          messages: result,
+          messages: result[0],
         });
       });
     }

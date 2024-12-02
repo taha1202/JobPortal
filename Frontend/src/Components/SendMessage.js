@@ -123,9 +123,8 @@ const SendMessage = () => {
         </ul>
       </div>
 
-      {/* Main Chat Content */}
+    
       <div className="chat-content">
-        {/* Chat Header */}
         <div className="chat-header">
           <h3>
             {selectedSender
@@ -135,8 +134,6 @@ const SendMessage = () => {
               : "Select a sender"}
           </h3>
         </div>
-
-        {/* Chat Messages */}
         <div className="chat-messages">
           {messages.map((msg, index) => (
             <div
@@ -150,7 +147,6 @@ const SendMessage = () => {
           ))}
         </div>
 
-        {/* Chat Input */}
         <div className="chat-input">
           <input
             type="text"

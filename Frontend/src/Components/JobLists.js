@@ -2,14 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const JobLists = ({ id, job_title, company_name, pictureUrl, job_category, salary, date }) => {
-  const convertPathToUrl = (localPath) => {
-    const baseUrl = "http://localhost:5000/uploads/images/";
-    const fileName = localPath.split("\\uploads\\images\\")[1];
-    return baseUrl + fileName;
-  };
+ 
 
   const [colour, setColor] = useState("goldenrod");
-  const localUrl = convertPathToUrl(pictureUrl);
   const storedUser = localStorage.getItem("user");
   const user = JSON.parse(storedUser);
   
@@ -87,7 +82,7 @@ const JobLists = ({ id, job_title, company_name, pictureUrl, job_category, salar
     <>
       <div className="job-list">
         <div className="card">
-          <img src={localUrl} className="card-img-top" alt="company-image" />
+          <img src={pictureUrl} className="card-img-top" alt="company-image" />
           <div className="card-body">
             <div className="card-title">
               <span className="label">Company:</span>{" "}

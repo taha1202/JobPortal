@@ -53,11 +53,7 @@ const JobDetails = () => {
 
     fetchJobDetails();
   }, [id]);
-  const convertPathToUrl = (localPath) => {
-    const baseUrl = "http://localhost:5000/uploads/images/";
-    const fileName = localPath.split("\\uploads\\images\\")[1];
-    return baseUrl + fileName;
-  };
+
   const HandleApplication =  async (e) =>{
     e.preventDefault();
     const token = localStorage.getItem("token");
@@ -108,9 +104,6 @@ const JobDetails = () => {
     .split("/n")
     .map((req, index) => <p key={index}>{req}</p>);
 
-  if (job.picture) {
-    localUrl = convertPathToUrl(job.picture);
-  }
 
   if (loading)
     return (
@@ -120,9 +113,9 @@ const JobDetails = () => {
     );
   return (
     <div className="job-details-container">
-      {localUrl && (
-        <img src={localUrl} alt="company-image" className="company-image" />
-      )}
+      
+        <img src={job.picture} alt="company-image" className="company-image" />
+      
       <div className="job-details-content">
         <h2 className="job-title">{job.job_title}</h2>
         <div className="company-info">
