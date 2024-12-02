@@ -470,15 +470,17 @@ const CheckInterview = async (req, res) => {
         });
       }
       if (result.length <= 0){
-        res.status(200).send({
+        return res.status(200).send({
           success: true,
           status: "",
         });
       }
-      res.status(200).send({
+      else{
+      return res.status(200).send({
         success: true,
         status: result[0].status,
       });
+    }
     });
   } catch (error) {
     console.log(error);
