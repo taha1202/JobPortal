@@ -106,13 +106,13 @@ const ForgotPassword = async (req, res) => {
           const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: process.env.EMAIL, 
-              pass: process.env.EMAIL_PASSWORD, 
+              user: "tahaghulam179@gmail.com", 
+              pass: "@mteegee12", 
             },
           });
 
           const mailOptions = {
-            from: process.env.EMAIL,
+            from: "tahaghulam179@gmail.com",
             to: email,
             subject: "Password Reset Request",
             text: `Hello, 
