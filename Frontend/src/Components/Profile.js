@@ -8,6 +8,7 @@ const Profile = ({ role }) => {
   const [Password, setPassword] = useState(false);
   let resumePreview;
   let resumeUrl;
+  let profilePicUrl;
   const [values, setValues] = useState({
     first_name: "",
     last_name: "",
@@ -16,6 +17,8 @@ const Profile = ({ role }) => {
     education: "",
     profile_pic: "",
     add_notes: "",
+    active_jobs:"",
+    totalApplication:"",
   });
   const [edit, setEdit] = useState({
     edit_name: false,
@@ -46,6 +49,33 @@ const Profile = ({ role }) => {
     }
   };
   useEffect(() => {
+    const fetchEmpProfile = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(
+          "https://jobportal-ubcf.onrender.com/api/view-emp-profile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile details");
+        }
+
+        const data = await response.json();
+        setValues(data.profile);
+        console.log(data.profile);
+      } catch (err) {
+        console.error("Error fetching profile details:", err);
+      }
+    };
+
+    
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       try {
@@ -68,7 +98,6 @@ const Profile = ({ role }) => {
         setValues(data.profile);
         if (data.profile.profile_pic) {
           console.log("Resume Received:", data.profile.resume);
-          // // setPicturePreview(convertPathToUrl(data.profile.profile_pic));
         }
         setResume(data.profile.resume);
         console.log(data.profile);
@@ -76,8 +105,12 @@ const Profile = ({ role }) => {
         console.error("Error fetching profile details:", err);
       }
     };
-
-    fetchProfile();
+    if(role === 1) {
+      fetchProfile();
+    }
+    else {
+      fetchEmpProfile();
+    }
   }, []);
 
   const HandleOnChange = (e) => {
@@ -109,7 +142,34 @@ const Profile = ({ role }) => {
     const token = localStorage.getItem("token");
     if (role === 2) {
       try {
-      } catch (error) {}
+        const response = await fetch(
+          "https://jobportal-ubcf.onrender.com/api/edit-emp-profile",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              ...values,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          alert("Profile Updated Successfully");
+          setValues((prevValues) => ({
+            ...prevValues,
+            profile_pic: profilePicUrl,
+          }));
+        } else {
+          alert(data.message || "Failed to update profile!");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("An error occurred. Please try again.");
+      }
     } else {
       try {
         let profilePicUrl = values.profile_pic;
@@ -382,12 +442,12 @@ const Profile = ({ role }) => {
           <>
             <div className="form-group">
               <label>Active Job Postings:</label>
-              <p>Total Number of Active Jobs Are: </p>
+              <p>Total Number of Active Jobs Are: {values.active_jobs}</p>
             </div>
 
             <div className="form-group">
               <label>Applications Received:</label>
-              <p>Total No of Applications Received:</p>
+              <p>Total No of Applications Received: {values.totalApplication}</p>
             </div>
 
             <div className="form-group">
