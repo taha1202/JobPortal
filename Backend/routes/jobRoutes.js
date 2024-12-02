@@ -11,6 +11,8 @@ const {
   ScheduleInterview,
   DeletePostJobs,
   updatePostJob,
+  CheckInterview,
+  UpdateInterview,
 } = require("../controllers/jobSearchController");
 const { postJob } = require("../controllers/postjob");
 const router = express.Router();
@@ -26,4 +28,6 @@ router.get("/get-save-jobs", getSavedJobs);
 router.post("/schedule-interview/:J_id/:A_id", ScheduleInterview);
 router.delete("/delete-post-jobs/:id", DeletePostJobs);
 router.patch("/edit-job/:id", updatePostJob);
+router.get("/check-status/:J_id/:A_id", CheckInterview);
+router.post("/update-interview/:J_id/:A_id", UpdateInterview);
 module.exports = router;
