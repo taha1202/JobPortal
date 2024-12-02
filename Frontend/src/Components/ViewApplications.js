@@ -101,7 +101,7 @@ const ViewApplications = () => {
       const status = data.status;
       if(status)
       {
-        console.log("patching Data");
+        console.log("patching Data")
         const updateResponse = await fetch(
           `https://jobportal-ubcf.onrender.com/api/update-interview/${selectedApplication.user_id}/${selectedApplication.application_id}`,
           {
