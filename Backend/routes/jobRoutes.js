@@ -29,5 +29,5 @@ router.post("/schedule-interview/:J_id/:A_id", ScheduleInterview);
 router.delete("/delete-post-jobs/:id", DeletePostJobs);
 router.patch("/edit-job/:id", updatePostJob);
 router.get("/check-status/:J_id/:A_id", CheckInterview);
-router.post("/update-interview/:J_id/:A_id", UpdateInterview);
+router.patch("/update-interview/:J_id/:A_id", UpdateInterview);
 module.exports = router;
