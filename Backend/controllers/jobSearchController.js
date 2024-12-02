@@ -460,7 +460,7 @@ const CheckInterview = async (req, res) => {
     let sql = `SELECT status FROM interviews WHERE employer_id = ? AND 
            job_seeker_id = ? AND application_id = ? `;
 
-    db.query(sql, [user_id,J_id,A_id,interview], (err, result) => {
+    db.query(sql, [user_id,J_id,A_id], (err, result) => {
       if (err) {
         console.error(err);
         return res.status(404).send({
