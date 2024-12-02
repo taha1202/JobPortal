@@ -493,6 +493,7 @@ const UpdateInterview = async (req, res) => {
   const {user_id } = req.user;
   const {J_id,A_id} = req.params;
   const {interview} = req.body
+  console.log(user_id,J_id,A_id,interview);
   if(!interview || (interview  < new Date())) {
     return res.status(404).send({
       success: false,
@@ -511,13 +512,19 @@ const UpdateInterview = async (req, res) => {
           message: "Error In inserting",
         });
       }
+      if (result.affectedRows === 0) {
+        return res.status(404).send({
+          success: false,
+          message: "No matching interview found to update.",
+        });
+      }
       res.status(200).send({
         success: true,
         message: "Interview Re-Scheduled Successfully.",
       });
     });
   } catch (error) {
-    console.log(error);
+    console.log("Server Error:", error);
     res.status(500).send({
       success: false,
       message: "Error in Scheduling Interview",
