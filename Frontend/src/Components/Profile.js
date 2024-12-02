@@ -6,9 +6,11 @@ const Profile = ({ role }) => {
   const [resume, setResume] = useState("");
   const [picturePreview, setPicturePreview] = useState("");
   const [Password, setPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   let resumePreview;
   let resumeUrl;
-  let profilePicUrl;
+  
   const [values, setValues] = useState({
     first_name: "",
     last_name: "",
@@ -16,9 +18,9 @@ const Profile = ({ role }) => {
     experience: "",
     education: "",
     profile_pic: "",
-    add_notes: "",
-    active_jobs:"",
-    totalApplication:"",
+    notes: "",
+    active_jobs: "",
+    totalApplication: "",
   });
   const [edit, setEdit] = useState({
     edit_name: false,
@@ -75,7 +77,6 @@ const Profile = ({ role }) => {
       }
     };
 
-    
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       try {
@@ -105,13 +106,12 @@ const Profile = ({ role }) => {
         console.error("Error fetching profile details:", err);
       }
     };
-    if(role === 1) {
+    if (role === 1) {
       fetchProfile();
-    }
-    else {
+    } else {
       fetchEmpProfile();
     }
-  }, []);
+  }, [role]);
 
   const HandleOnChange = (e) => {
     const { name, value } = e.target;
@@ -134,7 +134,6 @@ const Profile = ({ role }) => {
       console.log(file);
       set_UResume(file);
     }
-   
   };
 
   const HandleUpdateProfile = async (e) => {
@@ -161,7 +160,6 @@ const Profile = ({ role }) => {
           alert("Profile Updated Successfully");
           setValues((prevValues) => ({
             ...prevValues,
-            profile_pic: profilePicUrl,
           }));
         } else {
           alert(data.message || "Failed to update profile!");
@@ -259,7 +257,40 @@ const Profile = ({ role }) => {
   };
   // resumePreview = convertResumeToUrl(resume);
   console.log(picturePreview);
-  
+
+  const HandleSave = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(
+          "https://jobportal-ubcf.onrender.com/api/update-password",
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              oldPass:oldPassword,
+              newPass: newPassword,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          setPassword(false);
+          alert("Password Changed Successfully");
+          
+        } else {
+          alert(data.message || "Failed to update Password!");
+        }
+      } catch (error) {
+        console.error("Error updating Password:", error);
+        alert("An error occurred. Please try again.");
+      }
+
+  }
   return (
     <div className="profile-container">
       <div className="view-profile">
@@ -449,7 +480,9 @@ const Profile = ({ role }) => {
 
             <div className="form-group">
               <label>Applications Received:</label>
-              <p>Total No of Applications Received: {values.totalApplication}</p>
+              <p>
+                Total No of Applications Received: {values.totalApplication}
+              </p>
             </div>
 
             <div className="form-group">
@@ -457,9 +490,9 @@ const Profile = ({ role }) => {
               <textarea
                 className="form-control"
                 placeholder="Add Additional Notes"
-                name="add_notes"
-                value={values.add_notes === null ? "" : values.add_notes}
-                disabled={!notes && values.add_notes}
+                name="notes"
+                value={values.notes === null ? "" : values.notes}
+                disabled={!notes && values.notes}
                 onChange={HandleOnChange}
                 onMouseLeave={() => setNotes(false)}
                 onClick={() => setNotes(true)}
@@ -476,7 +509,45 @@ const Profile = ({ role }) => {
 
         <div className="profile-button">
           <button onClick={HandleUpdateProfile}>Update Profile</button>
-          <button onClick={() => setPassword(true)}>Change Password</button>
+          <button id="openModal" class="open-modal-btn" onClick={()=> setPassword(true)}>
+            Change Password
+          </button>
+          {Password === true && (
+          <div id="customModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name">Old Password</label>
+                    <input
+                      type="password"
+                      id="recipient-name"
+                      class="form-control"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text">New Password</label>
+                    <input
+                      type="password"
+                      id="recipient-name"
+                      class="form-control"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="closeModalFooter" class="btn btn-secondary" onClick={()=> setPassword(false)}>
+                  Close
+                </button>
+                <button class="btn btn-secondary" onClick={HandleSave}>Save Password</button>
+              </div>
+            </div>
+          </div>
+          )}
         </div>
       </div>
     </div>

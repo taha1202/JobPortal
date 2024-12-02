@@ -1,4 +1,5 @@
 const db = require("../db");
+const bcrypt = require('bcrypt');
 
 const getprofile = async (req, res) => {
   const { user_id } = req.user;
@@ -255,9 +256,9 @@ const viewEmployerProfile = async (req, res) => {
 const editEmployerProfile = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const { add_notes,first_name,last_name } = req.body;
-    let sql = `UPDATE profiles SET notes = ? WHERE user_id = ?`;
-    db.query(sql, [add_notes,user_id],(err, result) => {
+    const { add_notes,first_name,last_name,profile_pic } = req.body;
+    let sql = `UPDATE profiles SET notes = ?, profile_pic = ? WHERE user_id = ?`;
+    db.query(sql, [add_notes,profile_pic,user_id],(err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).send({
@@ -290,4 +291,42 @@ const editEmployerProfile = async (req, res) => {
   }
 };
 
-module.exports = { getprofile, viewProfile, editProfile,applicantProfile,editEmployerProfile,viewEmployerProfile};
+const UpdatePassword = (req, res) => {
+  const {user_id} = req.user
+  const { oldPass, newPass } = req.body;
+  console.log(oldPass,newPass);
+  db.query('SELECT * FROM Users WHERE user_id = ?', [user_id], (err, results) => {
+    if (results <= 0) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+    console.log(results);
+    const user = results[0];
+    bcrypt.compare(oldPass, user.password, (err, isMatch) => {
+      if (err) throw err;
+
+      if (isMatch) {
+        bcrypt.hash(newPass, 10, (err, hashedPassword) => {
+          if (err) {
+            return res.status(500).json({ error: 'Error hashing password' });
+          }
+         let sql = `Update Users SET password = ? where user_id = ?`;
+         db.query(sql, [hashedPassword,user_id],(err, result) => {
+            if (err) {
+              console.error(err);
+              return res.status(500).send({
+                success: false,
+                message: "Error In Changing Password",
+              });
+            }
+          });
+        });
+        res.status(200).json({ success: true, message: 'Password Changed successful'});
+      } 
+      else {
+        res.status(400).json({ message: 'Invalid Old Password' });
+      }
+    });
+  });
+};
+
+module.exports = { getprofile, viewProfile, editProfile,applicantProfile,editEmployerProfile,viewEmployerProfile,UpdatePassword};
