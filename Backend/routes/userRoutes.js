@@ -1,7 +1,7 @@
 const express = require('express');
 const { signup, login} = require('../controllers/userController');
 const router = express.Router();
-const { uploadS3 } = require('./middleware/upload');
+const { uploadS3 } = require('../middleware/upload');
 
 
 router.post('/upload-resume', uploadS3.single('U_resume'), (req, res) => {
