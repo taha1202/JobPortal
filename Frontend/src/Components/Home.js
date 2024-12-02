@@ -13,13 +13,16 @@ const Home = ({ role }) => {
     const fetchfeedBacks = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("https://jobportal-ubcf.onrender.com/api/getfeedback", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        });
+        const response = await fetch(
+          "https://jobportal-ubcf.onrender.com/api/getfeedback",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch Feedbacks");
@@ -40,13 +43,16 @@ const Home = ({ role }) => {
     const fetchCategories = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("https://jobportal-ubcf.onrender.com/api/getcategory", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        });
+        const response = await fetch(
+          "https://jobportal-ubcf.onrender.com/api/getcategory",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch Categories");
@@ -55,7 +61,7 @@ const Home = ({ role }) => {
         const data = await response.json();
         setCategories(data.category || []);
         console.log(data.category);
-        setTotalCatPage(Math.ceil(data.pages/3));
+        setTotalCatPage(Math.ceil(data.pages / 3));
       } catch (err) {
         console.error("Error fetching Categories:", err);
       }
@@ -75,40 +81,36 @@ const Home = ({ role }) => {
   );
 
   const HandlePrevCat = () => {
-    if(currentCategory > 1){
+    if (currentCategory > 1) {
       setCurrentCatPage(currentCategory - 1);
     }
   };
 
   const HandleNextCat = () => {
-    if(currentCategory !== TotalCategory) {
+    if (currentCategory !== TotalCategory) {
       setCurrentCatPage(currentCategory + 1);
     }
   };
 
-  
   const HandlePrevFeed = () => {
-    if(currentFeedback > 1){
+    if (currentFeedback > 1) {
       setCurrentFeedPage(currentFeedback - 1);
     }
   };
 
   const HandleNextFeed = () => {
-    if(currentFeedback !== TotalFeedback) {
+    if (currentFeedback !== TotalFeedback) {
       setCurrentFeedPage(currentFeedback + 1);
     }
   };
 
-  const HandleClick = ()=> {
-    if(!role) {
-      alert ("Log In First To Access Jobs.")
-      navigate('/login?mode=login');
-      
+  const HandleClick = () => {
+    if (!role) {
+      alert("Log In First To Access Jobs.");
+      navigate("/login?mode=login");
+    } else {
+      navigate("/viewjobs");
     }
-    else{
-      navigate('/viewjobs')
-    }
-
   };
   return (
     <>
@@ -119,11 +121,7 @@ const Home = ({ role }) => {
             Your journey to finding the perfect job starts here. Explore
             thousands of job listings tailored to your skills.
           </p>
-          <Link
-            className="starter-btn"
-            to="/login?mode=login"
-            role="button"
-          >
+          <Link className="starter-btn" to="/login?mode=login" role="button">
             Get Started
           </Link>
         </div>
@@ -152,78 +150,154 @@ const Home = ({ role }) => {
           </Link>
         </div>
       )}
+      {role === 1 ? (
+        <div className="categories-section my-5">
+          <h2 className="text-center">Explore Job Categories</h2>
+          <div className="row my-4 align-items-center">
+            <div className="col-md-1">
+              <button
+                className="btn btn-light mx-2"
+                onClick={HandlePrevCat}
+                disabled={currentCategory === 1}
+              >
+                <i className="fa-solid fa-less-than"></i>
+              </button>
+            </div>
 
-      <div className="categories-section my-5">
-        <h2 className="text-center">Explore Job Categories</h2>
-        <div className="row my-4 align-items-center">
-          <div className="col-md-1">
-            <button
-              className="btn btn-light mx-2"
-               onClick={HandlePrevCat}
-               disabled={currentCategory === 1}
-            >
-              <i className="fa-solid fa-less-than"></i>
-            </button>
-          </div>
-
-          <div className="col-md-10 d-flex justify-content-around">
-            {displaycats.map((category, index) => (
-              <div className="card text-center" key={index}>
-                <div className="card-body">
-                  <h5 className="card-title">{category.category_name}</h5>
-                  <p className="card-text">{category.category_description}</p>
-                  <button className="btn btn-secondary" onClick={HandleClick}>Explore</button>
+            <div className="col-md-10 d-flex justify-content-around">
+              {displaycats.map((category, index) => (
+                <div className="card text-center" key={index}>
+                  <div className="card-body">
+                    <h5 className="card-title">{category.category_name}</h5>
+                    <p className="card-text">{category.category_description}</p>
+                    <button className="btn btn-secondary" onClick={HandleClick}>
+                      Explore
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <div className="col-md-1 text-center">
-            <button
-              className="btn btn-light"
-               onClick={HandleNextCat}
-               disabled={currentCategory === TotalCategory}
-            >
-              <i className="fa-solid fa-greater-than"></i>
-            </button>
+            <div className="col-md-1 text-center">
+              <button
+                className="btn btn-light"
+                onClick={HandleNextCat}
+                disabled={currentCategory === TotalCategory}
+              >
+                <i className="fa-solid fa-greater-than"></i>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        role === 2 && (
+          <div className="categories-section my-5">
+            <h2 className="text-center">Empower Your Hiring Process</h2>
+            <p className="text-center" style={{color:"white" , fontSize: "20px",fontWeight:"bold"}}>
+              Discover talented professionals and build your dream team today.
+            </p>
 
+            <div className="row my-4 align-items-center justify-content-center mx-3">
+             
+              <div className="col-md-4">
+                <div className="card text-center">
+                  <div className="card-body">
+                    <h5 className="card-title">View Applicants</h5>
+                    <p className="card-text">
+                      See who's applied to your job postings.
+                    </p>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => navigate("/view-applications")}
+                    >
+                      View Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div className="card text-center">
+                  <div className="card-body">
+                    <h5 className="card-title">Post a New Job</h5>
+                    <p className="card-text">
+                      Attract top talent by posting a new job.
+                    </p>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => navigate("/postjob")}
+                    >
+                      Post Job
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div className="card text-center">
+                  <div className="card-body">
+                    <h5 className="card-title">Manage Job Posts</h5>
+                    <p className="card-text">
+                      Edit or delete your existing job posts.
+                    </p>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => navigate("/viewpostjob")}
+                    >
+                      Manage Jobs
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Message or Placeholder */}
+            <div className="text-center my-5" >
+              <h4 style={{color: "white", fontWeight:"bold"}}>
+                Your job postings are reaching thousands of potential candidates
+                daily.
+              </h4>
+              <p style={{color: "white", fontWeight:"bold",fontSize:"18px"}}>Optimize your job descriptions to attract the best talent.</p>
+            </div>
+          </div>
+        )
+      )}
       <div className="testimonials-section my-5 text-center">
         <h2>What Our Users Say</h2>
         <div className="row mt-4">
-        <div className="col-md-1">
+          <div className="col-md-1">
             <button
               className="btn btn-light mx-2 my-5"
-               onClick={HandlePrevFeed}
-               disabled={currentFeedback === 1}
+              onClick={HandlePrevFeed}
+              disabled={currentFeedback === 1}
             >
               <i className="fa-solid fa-less-than"></i>
             </button>
           </div>
           <div className="col-md-10 d-flex justify-content-center">
-          {values.length > 0 ? (
-            displayfeeds.map((feedback, index) => (
-              <div className = "d-flex flex-column align-items-center mx-3"
-                key={index}>
-                <blockquote className="blockquote">
-                  <p>{feedback.comments}</p>
-                  <footer className="blockquote-footer">
-                    {feedback.first_name + " " + feedback.last_name}
-                  </footer>
-                </blockquote>
-              </div>
-            ))
-          ) : (
-            <p>No feedback available at the moment. Check back later!</p>
-          )}
+            {values.length > 0 ? (
+              displayfeeds.map((feedback, index) => (
+                <div
+                  className="d-flex flex-column align-items-center mx-3"
+                  key={index}
+                >
+                  <blockquote className="blockquote">
+                    <p>{feedback.comments}</p>
+                    <footer className="blockquote-footer">
+                      {feedback.first_name + " " + feedback.last_name}
+                    </footer>
+                  </blockquote>
+                </div>
+              ))
+            ) : (
+              <p>No feedback available at the moment. Check back later!</p>
+            )}
           </div>
           <div className="col-md-1 text-center">
             <button
               className="btn btn-light my-5"
-               onClick={HandleNextFeed}
-               disabled={currentFeedback === TotalFeedback}
+              onClick={HandleNextFeed}
+              disabled={currentFeedback === TotalFeedback}
             >
               <i className="fa-solid fa-greater-than"></i>
             </button>
@@ -235,11 +309,7 @@ const Home = ({ role }) => {
         <div className="cta-section text-center my-5">
           <h2>Ready to Find Your Dream Job?</h2>
           <p className="lead">Sign up today and start your journey!</p>
-          <Link
-            className="end-btn"
-            to="/login?mode=signup"
-            role="button"
-          >
+          <Link className="end-btn" to="/login?mode=signup" role="button">
             Join Now
           </Link>
         </div>

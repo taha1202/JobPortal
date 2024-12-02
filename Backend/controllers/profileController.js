@@ -256,9 +256,9 @@ const viewEmployerProfile = async (req, res) => {
 const editEmployerProfile = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const { add_notes,first_name,last_name,profile_pic } = req.body;
-    let sql = `UPDATE profiles SET notes = ?, profile_pic = ? WHERE user_id = ?`;
-    db.query(sql, [add_notes,profile_pic,user_id],(err, result) => {
+    const { add_notes,first_name,last_name,profile_pic,notes } = req.body;
+    let sql = `UPDATE profiles SET notes = ?, profile_pic = ?, notes = ? WHERE user_id = ?`;
+    db.query(sql, [add_notes,profile_pic,notes,user_id],(err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).send({

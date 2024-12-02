@@ -390,11 +390,11 @@ const updatePostJob = async (req, res) => {
     if(update === "job_title" && field){
       sql = `UPDATE job_listings SET title = ? WHERE job_id = ?`;
     }
-    if(update === "job_description" && field) {
+    else if(update === "job_description" && field) {
       sql = `UPDATE job_listings SET description = ? WHERE job_id = ?`;
     }
 
-    if((update === "status" || update === "salary" || update === "requirements") && field) {
+    else if((update === "status" || update === "salary" || update === "requirements") && field) {
       sql = `UPDATE job_listings SET ${update} = ? WHERE job_id = ?`;
     }
 

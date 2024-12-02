@@ -73,7 +73,7 @@ const Login = ({ setRole, setName, setShowStarterPage}) => {
             setRole(data.role_id);
             setName(data.Uname);
             setShowStarterPage(true);
-            navigate("/"); // Redirect to homepage
+            navigate("/"); 
             alert("Login successful!");
           } else {
             alert(data.message || "Login failed!");

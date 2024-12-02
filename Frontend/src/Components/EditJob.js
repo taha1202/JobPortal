@@ -274,8 +274,6 @@ const EditJob = () => {
             {isEditing["salary"] ? "Save" : "Edit"}
           </button>
         </div>
-
-        {/* Status */}
         <div className="job-section">
           <h3>Status</h3>
           {isEditing["status"] ? (

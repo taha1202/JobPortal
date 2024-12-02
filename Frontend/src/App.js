@@ -34,17 +34,17 @@ function App() {
   const [U_name, setName] =  useState("");
   const [showStarterPage, setShowStarterPage] = useState(true); 
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setShowStarterPage(false);
-  //   }, 10000);
-  //   return () => clearTimeout(timer);
-  // }, [showStarterPage]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowStarterPage(false);
+    }, 7000);
+    return () => clearTimeout(timer);
+  }, [showStarterPage]);
 
  
   if (showStarterPage) {
-    // return <StarterPage/>;
-    console.log(showStarterPage)
+    return <StarterPage/>;
+    
   }
   return (
     <>
