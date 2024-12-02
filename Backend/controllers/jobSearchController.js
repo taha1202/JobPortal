@@ -460,7 +460,6 @@ const CheckInterview = async (req, res) => {
   try {
     let sql = `SELECT interview_id FROM interviews WHERE employer_id = ? AND 
            job_seeker_id = ? AND application_id = ? `;
-
     db.query(sql, [user_id,J_id,A_id], (err, result) => {
       if (err) {
         console.error(err);
@@ -469,15 +468,18 @@ const CheckInterview = async (req, res) => {
           message: "Error In inserting",
         });
       }
+      console.log(result);
       if (result.length <= 0){
         return res.status(200).send({
           success: true,
+          message:"Schedule Interview",
           status: "",
         });
       }
       else{
       return res.status(200).send({
         success: true,
+        message:"Reschedule Interview",
         status: result[0].status,
       });
     }

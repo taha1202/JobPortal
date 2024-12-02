@@ -99,8 +99,9 @@ const ViewApplications = () => {
         throw new Error(data.message || "Failed to Get Interview Status");
       }
       const status = data.status;
-      if(status === "scheduled")
+      if(status)
       {
+        console.log("patching Data");
         const updateResponse = await fetch(
           `https://jobportal-ubcf.onrender.com/api/update-interview/${selectedApplication.user_id}/${selectedApplication.application_id}`,
           {
