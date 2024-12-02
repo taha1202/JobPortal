@@ -116,7 +116,7 @@ const viewProfile = async (req, res) => {
 const editProfile = async (req, res) => {
   try {
     const { user_id } = req.user;
-    const { skills, experience, education, resume, profile_pic } = req.body;
+    const { skills, experience, education, resume, profile_pic,first_name,last_name } = req.body;
     console.log("Values in backend: ",skills, experience, education, resume, profile_pic);
     let sql = `UPDATE profiles SET skills = ?, experience = ?, education = ?, resume = ?, 
     profile_pic = ? WHERE user_id = ?`;
