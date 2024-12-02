@@ -68,7 +68,7 @@ const SendMessage = async (req, res) => {
     const { user_id } = req.user;
     try {
       let sql = `SELECT M.sender_id, U.first_name,U.last_name FROM messages M
-        JOIN users U on M.sender_id = U.user_id
+        JOIN Users U on M.sender_id = U.user_id
         WHERE receiver_id = ?`;
   
       db.query(sql,[user_id],(err, result) => {
@@ -101,7 +101,7 @@ const SendMessage = async (req, res) => {
     const {id} = req.params
     try {
       let sql = `SELECT M.content,M.sender_id, U.first_name,U.last_name FROM messages M
-        JOIN users U on M.sender_id = U.user_id
+        JOIN Users U on M.sender_id = U.user_id
         WHERE receiver_id = ? AND sender_id = ?`;
   
       db.query(sql,[user_id,id],(err, result) => {
