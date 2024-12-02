@@ -91,7 +91,7 @@ const Messages = () => {
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-              message,
+              message: message,
             }),
           }
         );
@@ -100,8 +100,8 @@ const Messages = () => {
         console.log(data);
   
         if (response.ok) {
-          setMessages([...messages, { content: message, sender_id: rec_id }]);
-          setMessage("");
+          alert("Message Sent Successfully");
+          
         }
       } catch (err) {
         console.error("Error sending message:", err);
@@ -125,9 +125,7 @@ const Messages = () => {
           </ul>
         </div>
   
-        {/* Main Chat Content */}
         <div className="chat-content">
-          {/* Chat Header */}
           <div className="chat-header">
             <h3>
               {selectedSender
@@ -137,16 +135,14 @@ const Messages = () => {
           </div>
   
           <div className="chat-messages">
-            {messages.map((msg, index) => (
               <div
-                key={index}
                 className={`message ${
-                  msg.sender_id === selectedSender?.id ? "received" : "sent"
+                  messages.sender_id === selectedSender?.id ? "received" : "sent"
                 }`}
               >
-                {msg.content}
+                {messages.content}
               </div>
-            ))}
+            
           </div>
           <div className="chat-input">
             <input

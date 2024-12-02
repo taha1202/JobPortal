@@ -89,7 +89,7 @@ const SendMessage = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            message,
+            message: message,
           }),
         }
       );
@@ -98,8 +98,7 @@ const SendMessage = () => {
       console.log(data);
 
       if (response.ok) {
-        setMessages([...messages, { content: message, sender_id: rec_id }]);
-        setMessage("");
+        alert ("Message Sent Successfully");
       }
     } catch (err) {
       console.error("Error sending message:", err);
@@ -135,16 +134,15 @@ const SendMessage = () => {
           </h3>
         </div>
         <div className="chat-messages">
-          {messages.map((msg, index) => (
+          
             <div
-              key={index}
               className={`message ${
-                msg.sender_id === selectedSender?.id ? "received" : "sent"
+                messages.sender_id === selectedSender?.id ? "received" : "sent"
               }`}
             >
-              {msg.content}
+              {messages.content}
             </div>
-          ))}
+         
         </div>
 
         <div className="chat-input">

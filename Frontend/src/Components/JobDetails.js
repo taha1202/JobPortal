@@ -5,7 +5,6 @@ import Spinner from "./Spinner";
 const JobDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  let localUrl;
   const [job, setValues] = useState({
     job_id: 0,
     job_title: "",
