@@ -120,7 +120,7 @@ const Home = ({ role }) => {
             thousands of job listings tailored to your skills.
           </p>
           <Link
-            className="btn btn-primary"
+            className="starter-btn"
             to="/login?mode=login"
             role="button"
           >
@@ -135,7 +135,7 @@ const Home = ({ role }) => {
             Your journey to finding the perfect job starts here. Explore
             thousands of job listings tailored to your skills.
           </p>
-          <Link className="btn btn-primary" to="/viewjobs" role="button">
+          <Link className="starter-btn" to="/viewjobs" role="button">
             View Jobs
           </Link>
         </div>
@@ -147,7 +147,7 @@ const Home = ({ role }) => {
             Your journey to finding the perfect job starts here. Explore
             thousands of job listings tailored to your skills.
           </p>
-          <Link className="btn btn-primary" to="/postjob" role="button">
+          <Link className="starter-btn" to="/postjob" role="button">
             Post Jobs
           </Link>
         </div>
@@ -236,7 +236,7 @@ const Home = ({ role }) => {
           <h2>Ready to Find Your Dream Job?</h2>
           <p className="lead">Sign up today and start your journey!</p>
           <Link
-            className="btn btn-primary "
+            className="end-btn"
             to="/login?mode=signup"
             role="button"
           >
@@ -249,7 +249,7 @@ const Home = ({ role }) => {
           <p className="lead">
             Share your thoughts and help us improve your experience.
           </p>
-          <Link className="btn btn-primary " to="/feedback" role="button">
+          <Link className="end-btn " to="/feedback" role="button">
             Give Feedback
           </Link>
         </div>

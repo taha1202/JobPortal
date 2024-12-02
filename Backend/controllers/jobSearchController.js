@@ -217,7 +217,8 @@ const viewPostJob = async (req, res) => {
 
 const GetCategory = async (req, res) => {
   try {
-    let sql = `SELECT category_name, category_description from Job_categories `;
+    let sql = `SELECT category_name, category_description from Job_categories
+                order by category_name asc`;
 
     db.query(sql, (err, result) => {
       if (err) {

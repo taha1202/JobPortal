@@ -327,17 +327,18 @@ body {
   font-size: 1.2rem;
 }
 
-.hero-section .btn {
+.hero-section .starter-btn {
   background-color: #f1c40f; 
   color: #024141;
   border: none;
+  text-decoration: none;
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 5px;
   transition: all 0.3s ease;
 }
 
-.hero-section button:hover {
+.hero-section .starter-btn:hover {
   background-color: #dab10e; 
 }
 
@@ -432,17 +433,18 @@ body {
   font-weight: bold;
 }
 
-.cta-section .btn {
+.cta-section .end-btn {
   background-color: #f1c40f; 
   color: #024141;
   border: none;
   padding: 12px 25px;
   font-size: 1.2rem;
   border-radius: 5px;
+  text-decoration: none;
   transition: all 0.3s ease;
 }
 
-.cta-section button:hover {
+.cta-section .end-btn:hover {
   background-color: #dab10e; 
 }
 
