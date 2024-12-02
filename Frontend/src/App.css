@@ -1925,36 +1925,57 @@ margin-top: 15px;
 }
 .job-image-container {
   width: 100%;
-  height: 300px; /* Adjust the height as needed */
+  height: 350px;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Stack heading, image, and button vertically */
   align-items: center;
+  justify-content: space-between;
   position: relative;
-  overflow: hidden;
   border-radius: 15px;
   margin-bottom: 20px;
-  background: #1e1e2f; /* Placeholder color */
+  background: #1e1e2f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
 }
 
 .job-image-container h2 {
-  position: absolute;
-  top: 10px;
-  left: 10px;
   font-size: 1.2rem;
   font-weight: bold;
   color: #f39c12;
   background: rgba(0, 0, 0, 0.6);
   padding: 5px 10px;
   border-radius: 5px;
+  margin-bottom: 10px; /* Add spacing below heading */
+  text-align: center;
 }
 
 .job-image {
   width: 100%;
-  height: 100%;
-  object-fit: contain; /* Ensures the image covers the container */
-  object-position: center; /* Centers the image */
-  border-radius: 15px;
+  height: 250px; /* Adjust height to fit within container */
+  object-fit: contain; /* Show the entire image */
+  object-position: center;
+  border-radius: 10px;
 }
+
+.edit-btn {
+  background: #f39c12;
+  color: #000000;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.3s ease-in-out;
+  margin-top: 10px; /* Add spacing above button */
+}
+
+.edit-btn:hover {
+  background: #c87c08;
+  color: white;
+  transform: translateY(-3px);
+}
+
 
 .job-content {
   width: 100%;
@@ -2004,7 +2025,7 @@ margin-top: 15px;
   resize: none;
 }
 
-.job-section button {
+.job-details-wrapper button {
   background: #f39c12;
   color: #000000;
   padding: 10px 20px;
@@ -2017,14 +2038,14 @@ margin-top: 15px;
   margin-top: 15px;
 }
 
-.job-section button:hover {
+.job-details-wrapper button:hover {
   background: #c87c08;
   color: white;
   transform: translateY(-3px);
 }
 
 .job-section select {
-  color: #e1e1e1;
+  color: #a79d9d;
   text-align: center;
 }
 

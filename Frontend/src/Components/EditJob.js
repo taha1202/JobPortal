@@ -165,8 +165,8 @@ const EditJob = () => {
   return (
     <div className="job-details-wrapper">
       <div className="job-image-container">
+      <h2 >Company Image</h2>
       <div className="job-section">
-          <h2 style={{color: "#f39c12", fontWeight:"bold"}}>Company Image</h2>
           {isEditing["company_image"] ? (
             <input
               type="file"
@@ -187,6 +187,7 @@ const EditJob = () => {
             {isEditing["company_image"] ? "Save" : "Edit"}
           </button>
         </div>
+        
       </div>
 
       <div className="job-content">
