@@ -117,7 +117,7 @@ const viewApplications = async (req,res) => {
   try {
       let query =`SELECT A.application_id,A.application_date,U.first_name,U.last_name,A.user_id,A.status,
                   J.title, C.company_name, JC.category_name FROM applications A
-                  JOIN users U on A.user_id = U.user_id
+                  JOIN Users U on A.user_id = U.user_id
                   JOIN job_listings J on A.job_id = J.job_id
                   JOIN employers C ON J.company_id = C.company_id
                   JOIN Job_categories JC ON J.category_id = JC.category_id
