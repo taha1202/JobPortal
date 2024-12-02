@@ -8,8 +8,8 @@ const searchJobs = (req, res) => {
   if (filter && filterval) {
     sql = `SELECT J.job_id,J.title,J.description,J.salary,J.posting_date,C.company_name,
        C.company_image,JC.category_name FROM job_listings J join 
-       Employers C on J.company_id = C.company_id 
-       join job_categories JC on J.category_id = JC.category_id
+       employers C on J.company_id = C.company_id 
+       join Job_categories JC on J.category_id = JC.category_id
        join locations L on J.location_id = L.location_id
        WHERE J.status = 'active' `;
 
@@ -43,8 +43,8 @@ const searchJobs = (req, res) => {
     const params = [];
     sql = `SELECT J.job_id,J.title,J.description,J.salary,J.posting_date,C.company_name,
        C.company_image,JC.category_name FROM job_listings J join 
-       Employers C on J.company_id = C.company_id 
-       join job_categories JC on J.category_id = JC.category_id
+       employers C on J.company_id = C.company_id 
+       join Job_categories JC on J.category_id = JC.category_id
        WHERE J.status = 'active' `;
 
     if(min_salary  && !max_salary)
@@ -87,8 +87,8 @@ const getJobs = async (req, res) => {
     if (sort && order) {
       sql = `SELECT J.job_id,J.title,J.description,J.salary,J.posting_date,C.company_name,
        C.company_image,JC.category_name FROM job_listings J join 
-       Employers C on J.company_id = C.company_id 
-       join job_categories JC on J.category_id = JC.category_id
+       employers C on J.company_id = C.company_id 
+       join Job_categories JC on J.category_id = JC.category_id
        WHERE J.status = 'active' Order BY J.${sort} ${order}`;
       db.query(sql, (err, result) => {
         if (err) {
@@ -109,8 +109,8 @@ const getJobs = async (req, res) => {
     else {
       sql = `SELECT J.job_id,J.title,J.description,J.salary,J.posting_date,C.company_name,
        C.company_image,JC.category_name FROM job_listings J join 
-       Employers C on J.company_id = C.company_id 
-       join job_categories JC on J.category_id = JC.category_id
+       employers C on J.company_id = C.company_id 
+       join Job_categories JC on J.category_id = JC.category_id
        WHERE J.status = 'active' `;
       db.query(sql, (err, result) => {
         if (err) {
@@ -146,7 +146,7 @@ const viewDetails = async (req, res) => {
       J.salary,J.posting_date,C.company_name,C.company_description,C.company_image AS picture,
       JC.category_name AS job_category,L.city,L.state,L.country,L.street_name AS street
       FROM job_listings J JOIN 
-      Employers C ON J.company_id = C.company_id
+      employers C ON J.company_id = C.company_id
       JOIN Job_categories JC ON J.category_id = JC.category_id
       JOIN Locations L ON J.location_id = L.location_id
       WHERE J.job_id = ?`;
@@ -186,7 +186,7 @@ const viewPostJob = async (req, res) => {
     const { user_id } = req.user;
     let sql = `SELECT J.job_id, J.title,J.salary,J.status,J.posting_date,C.company_name,
       JC.category_name FROM job_listings J JOIN 
-      Employers C ON J.company_id = C.company_id
+      employers C ON J.company_id = C.company_id
       JOIN Job_categories JC ON J.category_id = JC.category_id
       WHERE C.employer_id = ? `;
 
@@ -310,7 +310,7 @@ const getSavedJobs = async (req,res) =>{
   try {
     let sql = `SELECT J.title, J.salary, J.status,J.posting_date,S.job_id,JC.category_name 
     FROM saved_jobs S JOIN job_listings J on S.job_id = J.job_id Join 
-    job_categories JC on J.category_id = JC.category_id WHERE S.user_id = ?`;
+    Job_categories JC on J.category_id = JC.category_id WHERE S.user_id = ?`;
     db.query(sql, [user_id], (err, results) => {
       if (err) {
         console.error(err);

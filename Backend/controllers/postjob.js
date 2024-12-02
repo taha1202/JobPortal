@@ -111,7 +111,7 @@ const postJob = (req, res) => {
           }
 
           function checkCategoryAndProceed() {
-            const ChckCategory = `SELECT category_id FROM job_categories WHERE category_name = ?`;
+            const ChckCategory = `SELECT category_id FROM Job_categories WHERE category_name = ?`;
             const categoryParams = [job_category];
 
             db.query(ChckCategory, categoryParams, (err, reslt) => {
@@ -127,7 +127,7 @@ const postJob = (req, res) => {
                 insertJobListing();
               } else {
                 const catParams = [job_category,category_description]
-                const CategoryQuery = `INSERT INTO job_categories (category_name,category_description) VALUES (?,?)`;
+                const CategoryQuery = `INSERT INTO Job_categories (category_name,category_description) VALUES (?,?)`;
                 db.query(CategoryQuery, catParams, (err, reslt) => {
                   if (err) {
                     return db.rollback(() => {
