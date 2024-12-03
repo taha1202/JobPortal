@@ -438,7 +438,7 @@ const Profile = ({ role }) => {
                   Uploaded Resume:
                 </label>
                 <a
-                  href={resumePreview}
+                  href={resume}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="uploaded-resume-link"
