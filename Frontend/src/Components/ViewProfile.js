@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 const ViewProfile = () => {
   const { id } = useParams();  
   const [resume, setResume] = useState("");
-  let resumePreview;
   const [values, setValues] = useState({
     first_name: "",
     last_name: "",
@@ -14,25 +13,7 @@ const ViewProfile = () => {
     profile_pic: "",
   });
 
-  const convertPathToUrl = (localPath) => {
-    if (
-      localPath ===
-      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-    ) {
-      return localPath;
-    }
-    const baseUrl = "http://localhost:5000/uploads/images/";
-    const fileName = localPath.split("uploads\\images\\")[1];
-    return baseUrl + fileName;
-  };
-
-  const convertResumeToUrl = (localPath) => {
-    if (localPath) {
-      const baseUrl = "http://localhost:5000/uploads/resume/";
-      const fileName = localPath.split("uploads\\resume\\")[1];
-      return baseUrl + fileName;
-    }
-  };
+ 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
@@ -60,13 +41,12 @@ const ViewProfile = () => {
 
     fetchProfile();
   }, [id]);
-  resumePreview = convertResumeToUrl(resume);
   return (
     <div className="profile-container">
       <div className="view-profile">
         <div className="profile-picture-container">
           <img
-            src={convertPathToUrl(values.profile_pic)}
+            src={values.profile_pic}
             alt="profile"
             className="profile-picture"
           />
@@ -96,7 +76,7 @@ const ViewProfile = () => {
           <div className="uploaded-resume-container">
             <label className="uploaded-resume-label">Uploaded Resume:</label>
             <a
-              href={resumePreview}
+              href={resume}
               target="_blank"
               rel="noopener noreferrer"
               className="uploaded-resume-link"
