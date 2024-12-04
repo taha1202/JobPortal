@@ -439,7 +439,7 @@ const Profile = ({ role }) => {
                 <label className="uploaded-resume-label">
                   Uploaded Resume:
                 </label>
-                <iframe src="<%= resume %>" width="100%" height="600px"></iframe>
+                <iframe src="https://res.cloudinary.com/dsyhc5kvg/raw/upload/v1733326546/uploads/dd5y9tbqrkmyk7uejroo" width="100%" height="600px"></iframe>
 
               </div>
             )}
