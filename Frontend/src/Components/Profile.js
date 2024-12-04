@@ -9,7 +9,7 @@ const Profile = ({ role }) => {
   const [newPassword, setNewPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   let resumeUrl;
-  
+
   const [values, setValues] = useState({
     first_name: "",
     last_name: "",
@@ -243,10 +243,14 @@ const Profile = ({ role }) => {
 
           if (!uploadResponse.ok) {
             alert(uploadData.message || "Failed to upload picture.");
-          }
-          else{
+          } else {
             resumeUrl = uploadData.url;
-            console.log("Uploaded Resume URL: ", uploadData.url, "/n", resumeUrl);
+            console.log(
+              "Uploaded Resume URL: ",
+              uploadData.url,
+              "/n",
+              resumeUrl
+            );
           }
         }
 
@@ -283,42 +287,40 @@ const Profile = ({ role }) => {
       }
     }
   };
-  
+
   console.log(picturePreview);
 
   const HandleSave = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-      try {
-        const response = await fetch(
-          "https://jobportal-ubcf.onrender.com/api/update-password",
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              oldPass:oldPassword,
-              newPass: newPassword,
-            }),
-          }
-        );
-
-        const data = await response.json();
-        if (response.ok) {
-          setPassword(false);
-          alert("Password Changed Successfully");
-          
-        } else {
-          alert(data.message || "Failed to update Password!");
+    try {
+      const response = await fetch(
+        "https://jobportal-ubcf.onrender.com/api/update-password",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            oldPass: oldPassword,
+            newPass: newPassword,
+          }),
         }
-      } catch (error) {
-        console.error("Error updating Password:", error);
-        alert("An error occurred. Please try again.");
-      }
+      );
 
-  }
+      const data = await response.json();
+      if (response.ok) {
+        setPassword(false);
+        alert("Password Changed Successfully");
+      } else {
+        alert(data.message || "Failed to update Password!");
+      }
+    } catch (error) {
+      console.error("Error updating Password:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
   return (
     <div className="profile-container">
       <div className="view-profile">
@@ -437,14 +439,17 @@ const Profile = ({ role }) => {
                 <label className="uploaded-resume-label">
                   Uploaded Resume:
                 </label>
-                <a
-                  href={resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="uploaded-resume-link"
-                >
-                  View Resume
-                </a>
+                <div className="uploaded-resume-preview">
+                  {/* Embed the PDF directly in the page */}
+                  <embed
+                    src={resume}
+                    type="application/pdf"
+                    width="100%"
+                    height="500px"
+                    className="uploaded-resume-embed"
+                  />
+                </div>
+                View Resume
               </div>
             )}
             <div className="form-group my-3">
@@ -537,44 +542,54 @@ const Profile = ({ role }) => {
 
         <div className="profile-button">
           <button onClick={HandleUpdateProfile}>Update Profile</button>
-          <button id="openModal" class="open-modal-btn" onClick={()=> setPassword(true)}>
+          <button
+            id="openModal"
+            class="open-modal-btn"
+            onClick={() => setPassword(true)}
+          >
             Change Password
           </button>
           {Password === true && (
-          <div id="customModal" class="modal">
-            <div class="modal-content">
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="recipient-name">Old Password</label>
-                    <input
-                      type="password"
-                      id="recipient-name"
-                      class="form-control"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="message-text">New Password</label>
-                    <input
-                      type="password"
-                      id="recipient-name"
-                      class="form-control"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button id="closeModalFooter" class="btn btn-secondary" onClick={()=> setPassword(false)}>
-                  Close
-                </button>
-                <button class="btn btn-secondary" onClick={HandleSave}>Save Password</button>
+            <div id="customModal" class="modal">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="recipient-name">Old Password</label>
+                      <input
+                        type="password"
+                        id="recipient-name"
+                        class="form-control"
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="message-text">New Password</label>
+                      <input
+                        type="password"
+                        id="recipient-name"
+                        class="form-control"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    id="closeModalFooter"
+                    class="btn btn-secondary"
+                    onClick={() => setPassword(false)}
+                  >
+                    Close
+                  </button>
+                  <button class="btn btn-secondary" onClick={HandleSave}>
+                    Save Password
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
           )}
         </div>
       </div>
