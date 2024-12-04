@@ -22,7 +22,7 @@ const postJob = (req, res) => {
   if (!company_name || !job_title || !job_category || !company_description || !job_description || !requirement || 
     !salary || !status || !city || !country || !state || !street || !picture) {
     console.log("fields incomplete");
-    return res.status(400).json({ error: "All fields are required." });
+    return res.status(400).json({ message: "All fields are required." });
   }
 
   const EmployerQuery = `SELECT company_id FROM employers WHERE employer_id = ? AND company_name = ?`;
