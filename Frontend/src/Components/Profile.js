@@ -439,7 +439,7 @@ const Profile = ({ role }) => {
                 <label className="uploaded-resume-label">
                   Uploaded Resume:
                 </label>
-                <iframe src={resume} width="100%" height="600px"></iframe>
+                <iframe src="<%= resume %>" width="100%" height="600px"></iframe>
 
               </div>
             )}
