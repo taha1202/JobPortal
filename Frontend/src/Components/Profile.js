@@ -439,17 +439,8 @@ const Profile = ({ role }) => {
                 <label className="uploaded-resume-label">
                   Uploaded Resume:
                 </label>
-                <div className="uploaded-resume-preview">
-                  {/* Embed the PDF directly in the page */}
-                  <embed
-                    src={resume}
-                    type="application/pdf"
-                    width="100%"
-                    height="500px"
-                    className="uploaded-resume-embed"
-                  />
-                </div>
-                View Resume
+                <iframe src={resume} width="100%" height="600px"></iframe>
+
               </div>
             )}
             <div className="form-group my-3">
