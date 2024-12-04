@@ -97,9 +97,6 @@ const Profile = ({ role }) => {
 
         const data = await response.json();
         setValues(data.profile);
-        if (data.profile.profile_pic) {
-          console.log("Resume Received:", data.profile.resume);
-        }
         setResume(data.profile.resume);
         console.log(data.profile);
       } catch (err) {

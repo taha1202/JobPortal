@@ -30,7 +30,9 @@ const getprofile = async (req, res) => {
       } else {
         const profile = result[0];
         console.log(profile);
-        const hasNull = Object.values(profile).some((value) => value === null);
+        const hasNull = Object.entries(profile).some(
+          ([key, value]) => value === null && key !== 'notes'
+        );
         if (hasNull) {
           return res.status(404).send({
             success: false,

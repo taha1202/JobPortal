@@ -15,7 +15,6 @@ const postJob = (req, res) => {
     state,
     street,
     picture,
-    category_description,
   } = req.body;
 
   const { user_id } = req.user;
@@ -103,19 +102,7 @@ const postJob = (req, res) => {
               console.log("Category already exists, skipping insert.");
               category_id = reslt[0].category_id;
               insertJobListing();
-            } else {
-              const catParams = [job_category, category_description];
-              const CategoryQuery = `INSERT INTO Job_categories (category_name, category_description) VALUES (?, ?)`;
-              db.query(CategoryQuery, catParams, (err, reslt) => {
-                if (err) {
-                  return res.status(500).json({
-                    error: "Failed to post job due to invalid category values.",
-                  });
-                }
-                category_id = reslt.insertId;
-                insertJobListing();
-              });
-            }
+            } 
 
             function insertJobListing() {
               const JobQuery = `
