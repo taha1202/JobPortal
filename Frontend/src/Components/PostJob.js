@@ -71,7 +71,7 @@ const PostJob = () => {
         const uploadData = await uploadResponse.json();
 
         if (!uploadResponse.ok) {
-          console.log(pictureUrl);
+          alert(uploadData.message || "Failed to upload picture.")
           console.error(uploadData.message || "Failed to upload picture.");
         }
 

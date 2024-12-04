@@ -8,7 +8,6 @@ const Profile = ({ role }) => {
   const [Password, setPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
-  let resumePreview;
   let resumeUrl;
   
   const [values, setValues] = useState({
@@ -157,6 +156,7 @@ const Profile = ({ role }) => {
           const uploadData = await uploadResponse.json();
 
           if (!uploadResponse.ok) {
+            alert(uploadData.message || "Failed to upload picture.");
             throw new Error(uploadData.message || "Failed to upload picture.");
           }
 
@@ -214,6 +214,7 @@ const Profile = ({ role }) => {
           const uploadData = await uploadResponse.json();
 
           if (!uploadResponse.ok) {
+            alert(uploadData.message || "Failed to upload picture.");
             throw new Error(uploadData.message || "Failed to upload picture.");
           }
 
@@ -243,8 +244,10 @@ const Profile = ({ role }) => {
           if (!uploadResponse.ok) {
             alert(uploadData.message || "Failed to upload picture.");
           }
-          resumeUrl = uploadData.url;
-          console.log("Uploaded Resume URL: ", uploadData.url, "/n", resumeUrl);
+          else{
+            resumeUrl = uploadData.url;
+            console.log("Uploaded Resume URL: ", uploadData.url, "/n", resumeUrl);
+          }
         }
 
         const response = await fetch(
@@ -280,7 +283,7 @@ const Profile = ({ role }) => {
       }
     }
   };
-  // resumePreview = convertResumeToUrl(resume);
+  
   console.log(picturePreview);
 
   const HandleSave = async (e) => {

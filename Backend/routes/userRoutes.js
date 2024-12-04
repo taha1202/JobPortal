@@ -25,6 +25,15 @@ router.post('/upload-image', upload.single('picture'), (req, res) => {
   });
 });
 
+router.use((err, req, res, next) => {
+  if (err) {
+    if (err.message) {
+      return res.status(400).json({ error: err.message });
+    }
+    return res.status(500).json({ error: 'Something went wrong during the file upload' });
+  }
+});
+
 router.post('/signup', signup);
 router.post('/login', login);
 router.post('/forgot-password', ForgotPassword);
