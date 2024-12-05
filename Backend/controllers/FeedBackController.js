@@ -40,7 +40,7 @@ const GiveFeedBack = async (req, res) => {
      
       let sql = `SELECT F.comments, U.first_name,U.last_name FROM feedback F JOIN 
         Users U ON F.user_id = U.user_id 
-        where F.rating >=  4`;
+        where F.rating >=  4 and is_anonymous = 'No'`;
   
       db.query(sql,(err, result) => {
         if (err) {

@@ -185,6 +185,9 @@ const ViewApplications = () => {
               ) : (
                 <>
                   <button className="meet-button" onClick={() => handleScheduleInterview(application)}>Schedule Interview</button>
+                  <Link className="btn btn-success my-1" role="button" to={`/sendMessage/${application.user_id}`}>
+              Send Message
+              </Link>
                   <button className="btn btn-danger my-1">Remove</button>
                 </>
               
